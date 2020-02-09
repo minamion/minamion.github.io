@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Z-4dUnDvPo0Zcs9AAXLYMM4QXQLvBh3HU33QRI0GOXI">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.minamion.com","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="已编译完成的bin文件可从此处下载   懒得修改型号了 切记不要刷给wr703n 这是8m flash版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hualu WifiDock AR9331无线中继魔改笔记（？">
+<meta property="og:url" content="https://www.minamion.com/2019/06/20/index.html">
+<meta property="og:site_name" content="&#x2F;dev&#x2F;null">
+<meta property="og:description" content="已编译完成的bin文件可从此处下载   懒得修改型号了 切记不要刷给wr703n 这是8m flash版本">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2019/06/20/5d0b755fc2efb26699.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/06/20/5d0b7531ed82135864.png">
+<meta property="og:image" content="https://i.loli.net/2019/06/20/5d0b7530f1d3384567.png">
+<meta property="article:published_time" content="2019-06-20T15:31:47.000Z">
+<meta property="article:modified_time" content="2020-02-09T21:10:42.386Z">
+<meta property="article:author" content="神楽坂南音">
+<meta property="article:tag" content="Linux开发">
+<meta property="article:tag" content="Openwrt">
+<meta property="article:tag" content="硬件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/06/20/5d0b755fc2efb26699.jpg">
+
+<link rel="canonical" href="https://www.minamion.com/2019/06/20/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Hualu WifiDock AR9331无线中继魔改笔记（？ | /dev/null</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59174808-2"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-59174808-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">/dev/null</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">/dev/null</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.minamion.com/2019/06/20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="神楽坂南音">
+      <meta itemprop="description" content="所有内容重定向至/dev/null">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="/dev/null">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hualu WifiDock AR9331无线中继魔改笔记（？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-20 23:31:47" itemprop="dateCreated datePublished" datetime="2019-06-20T23:31:47+08:00">2019-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-10 05:10:42" itemprop="dateModified" datetime="2020-02-10T05:10:42+08:00">2020-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A1%AC%E4%BB%B6/" itemprop="url" rel="index">
+                    <span itemprop="name">硬件</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A1%AC%E4%BB%B6/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%A1%AC%E4%BB%B6/%E5%AD%A6%E4%B9%A0/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/06/20/" class="post-meta-item leancloud_visitors" data-flag-title="Hualu WifiDock AR9331无线中继魔改笔记（？" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/06/20/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/06/20/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>已编译完成的bin文件可从<a href="https://github.com/minamion/openwrt/releases/tag/v18.06.3-1" target="_blank" rel="noopener">此处</a>下载</p>
+</blockquote>
+<blockquote>
+<p>懒得修改型号了 切记不要刷给wr703n 这是8m flash版本</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="关于设备："><a href="#关于设备：" class="headerlink" title="关于设备："></a>关于设备：</h2><hr>
+<p>AR9331的CPU 8M flash 64M DDR 自带LS 4100mah电池 20块捡回来的库存垃圾 可插TF卡和U盘 天线采用IPX接口连接（可以更换）</p>
+<p><a href="https://i.loli.net/2019/06/20/5d0b755fc2efb26699.jpg" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/06/20/5d0b755fc2efb26699.jpg" alt="拆机图"></a></p>
+<h2 id="刷入系统："><a href="#刷入系统：" class="headerlink" title="刷入系统："></a>刷入系统：</h2><hr>
+<p>很明显官方的残废系统并不能满足我们的需求</p>
+<h3 id="刷入breed"><a href="#刷入breed" class="headerlink" title="刷入breed"></a>刷入breed</h3><p>这款无线中继硬件和TP-Link TL-WR703N非常相似 不同之处在于 复位键是在GPIO 12上 flash有8M</p>
+<p><a href="https://i.loli.net/2019/06/20/5d0b7531ed82135864.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/06/20/5d0b7531ed82135864.png" alt="breed"></a><br>具体步骤：</p>
+<ul>
+<li>开机，连接Hualu开头的WiFi。（WiFi密码12345678）</li>
+<li>ping 10.10.1.1能通后，浏览器打开<a href="http://10.10.1.1/" target="_blank" rel="noopener">http://10.10.1.1/</a></li>
+<li>开免密Telnet 无线存储—目录名称框内输入: %24(killall telnetd;telnetd -l /bin/ash) 然后点击创建按钮（很明显这里有个注入漏洞）</li>
+<li>telnet登录10.10.1.1（无需密码）。</li>
+<li>电脑开hfs web服务，共享<a href="URL" title="https://breed.hackpascal.net/EOL/breed-ar9331-pisen-r1163.bin">breed文件</a>，刷入breed</li>
+<li><ul>
+<li>下载breed（网页上载也可以，网页上载之后，是在/tmp/usb/sda目录下）  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp/</span><br><span class="line">wget [http://10.10.1.2/breed-ar9331-pisen-r1163.bin](http://10.10.1.2/breed-ar9331-pisen-r1163.bin)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><ul>
+<li>烧写  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp/</span><br><span class="line">mtd erase u-boot; mtd write breed-ar9331-pisen–GPIO12.bin u-boot 2&gt;ubootwrite.txt</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>重启使用BreedEnter进breed</li>
+<li><ul>
+<li><a href="URL" title="https://breed.hackpascal.net/BreedEnter.zip">BreedEnter</a>（需要<a href="URL" title="https://nmap.org/npcap/#download ">NpCap</a>的winpcap兼容模式支持）</li>
+</ul>
+</li>
+</ul>
+<h3 id="刷入Openwrt"><a href="#刷入Openwrt" class="headerlink" title="刷入Openwrt"></a>刷入Openwrt</h3><p><a href="https://i.loli.net/2019/06/20/5d0b7530f1d3384567.png" target="_blank" rel="noopener"><img src="https://i.loli.net/2019/06/20/5d0b7530f1d3384567.png" alt="breed"></a><br>由于硬件与WR703N基本一致 首先尝试刷入Openwrt官方提供的703N固件，经测试基本功能正常 但是白白浪费4M空间实在可惜，最终还是决定自己编译一份</p>
+<h2 id="编译Openwrt"><a href="#编译Openwrt" class="headerlink" title="编译Openwrt"></a>编译Openwrt</h2><hr>
+<blockquote>
+<p>已知信息：WiFi指示灯GPIO是0，高电平有效 网口状态灯是17，低电平有效 复位键是12，高电平有效</p>
+</blockquote>
+<h4 id="使用docker-openwrt-buildroot进行编译"><a href="#使用docker-openwrt-buildroot进行编译" class="headerlink" title="使用docker-openwrt-buildroot进行编译"></a>使用docker-openwrt-buildroot进行编译</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it noonien/openwrt-buildroot bash  </span><br><span class="line">sudo apt-get update  </span><br><span class="line">sudo apt-get install git-core build-essential libssl-dev libncurses5-dev unzip gawk zlib1g-dev subversion mercurial gettext autoconf libtool libpcre3-dev asciidoc xmlto libev-dev libudns-dev libc-ares-dev automake libmbedtls-dev libsodium-dev</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd openwrt  </span><br><span class="line">  </span><br><span class="line"> ./scripts/feeds update -a  </span><br><span class="line">  </span><br><span class="line"> scripts/feeds install -a</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改 <code>~/openwrt/target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr703n.c</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TL\_WR703N\_GPIO\_LED\_SYSTEM   0  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TL\_WR703N\_GPIO\_BTN\_RESET    12</span></span><br></pre></td></tr></table></figure>
+<pre><code>以及同文件 `gpio_led tl_wr703n_leds_gpio[]` 部分中</code></pre><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.active_low = <span class="number">0</span>,</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>打开 <code>~/openwrt/target/linux/ar71xx/image/tiny-tp-link.mk</code> ，找到 <code>define Device/tl-wr703n-v1</code>。</p>
+</li>
+<li><p>将 <code>$(Device/tplink-4mlzma)</code> 中的 <code>4mlzma</code> 改成 <code>8mlzma</code> 就可以支持8MB固件编译（16MB同理）</p>
+</li>
+<li><p>在源代码目录下 <code>make menuconfig</code></p>
+</li>
+<li><p><code>Target System</code> 和 <code>Subtarget</code> 应该分别是Atheros <code>AR7xxx/AR9xxx</code>和<code>Devices with small flash</code>，<code>Target Profile</code>选择<code>TP-LINK TLWR703N v1</code></p>
+</li>
+<li><p>启用 Web 管理界面 LuCI （记得选择为[*]而不是[M]，我们不需要编译ipk文件，直接整合进bin就行）</p>
+<p><code>LuCI → Collections → 选中 luci</code></p>
+</li>
+<li><p>添加 LuCI 中文支持</p>
+<p><code>LuCI → Modules → Translations → 选中 Chinese (zh-cn)</code></p>
+</li>
+<li><p>生成构建的配置文件，检查依赖</p>
+<p><code>make defconfig</code></p>
+</li>
+<li><p>编译，可加上 V=99 参数输出所有调试信息</p>
+<p><code>make</code></p>
+</li>
+<li><p>从 <code>openwrt/bin/target/ar71xx/tiny</code> 中取出 <code>openwrt-ar71xx-tiny-tl-wr703n-v1-squashfs-factory.bin</code> 刷入即可</p>
+</li>
+</ul>
+<h3 id="附加内容：编译某不可描述软件"><a href="#附加内容：编译某不可描述软件" class="headerlink" title="附加内容：编译某不可描述软件"></a>附加内容：编译某不可描述软件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">自行去除空格  </span></span><br><span class="line">git clone https://github.com/aa65535/openwrt-dist-luci.git package/openwrt-dist-luci  </span><br><span class="line">git clone https://github.com/aa65535/openwrt-dns-forwarder.git package/dns-forwarder  </span><br><span class="line">git clone https://github.com/Hill-98/luci-app-shad owsocks.git package/luci-app-shad owsocks  </span><br><span class="line">git clone https://github.com/Hill-98/openwrt-shad owsocksr package/shad owsocksr-libev  </span><br><span class="line">git clone https://github.com/Hill-98/openwrt-ckipver.git package/ckipver  </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译 po2lmo (如果有po2lmo可跳过)  </span></span><br><span class="line">pushd package/luci-app-shad owsocksr/tools/po2lmo  </span><br><span class="line">make &amp;&amp; sudo make install  </span><br><span class="line"><span class="meta">#</span><span class="bash"> 选择要编译的包 dnsmasq-full curl wget coreutils-base64 bash <span class="built_in">bind</span>-dig ckipver shad owsocksr-libev luci-app-sha dowsocks chinadns luci-app-chinadns dns-forwarder	luci-app-dns-forwarde ca-certificates openssl-util ca-bundle  </span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 务必选择Using shared library from system   </span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 提示 在menuconfig中按/可使用搜索  </span></span><br><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>神楽坂南音
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.minamion.com/2019/06/20/" title="Hualu WifiDock AR9331无线中继魔改笔记（？">https://www.minamion.com/2019/06/20/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux%E5%BC%80%E5%8F%91/" rel="tag"># Linux开发</a>
+              <a href="/tags/Openwrt/" rel="tag"># Openwrt</a>
+              <a href="/tags/%E7%A1%AC%E4%BB%B6/" rel="tag"># 硬件</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/03/" rel="prev" title="给ws215i编译内核所碰到的各种坑">
+      <i class="fa fa-chevron-left"></i> 给ws215i编译内核所碰到的各种坑
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于设备："><span class="nav-number">1.</span> <span class="nav-text">关于设备：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#刷入系统："><span class="nav-number">2.</span> <span class="nav-text">刷入系统：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#刷入breed"><span class="nav-number">2.1.</span> <span class="nav-text">刷入breed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#刷入Openwrt"><span class="nav-number">2.2.</span> <span class="nav-text">刷入Openwrt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译Openwrt"><span class="nav-number">3.</span> <span class="nav-text">编译Openwrt</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用docker-openwrt-buildroot进行编译"><span class="nav-number">3.0.1.</span> <span class="nav-text">使用docker-openwrt-buildroot进行编译</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附加内容：编译某不可描述软件"><span class="nav-number">3.1.</span> <span class="nav-text">附加内容：编译某不可描述软件</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="神楽坂南音"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">神楽坂南音</p>
+  <div class="site-description" itemprop="description">所有内容重定向至/dev/null</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/minamion/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;minamion&#x2F;" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/minamion" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;minamion" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/cn_Minamion" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;cn_Minamion" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">神楽坂南音</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">5k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">5 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.7.1
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'TjvKotcYoqiBm2Cx3PFYnKH0-gzGzoHsz',
+      appKey     : 'evLqD7Yc9zxK64XMaPw4l8pj',
+      placeholder: "Comment here",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
