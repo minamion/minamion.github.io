@@ -21,17 +21,36 @@
     var CONFIG = {"hostname":"www.minamion.com","root":"/","scheme":"Mist","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false};
   </script>
 
-  <meta name="description" content="所有内容重定向至/dev/null">
-<meta property="og:type" content="website">
-<meta property="og:title" content="/dev/null">
-<meta property="og:url" content="https://www.minamion.com/tags/python/index.html">
+  <meta name="description" content="本文原文位于此处   仅适用于 微软模拟飞行2020 是否适用于实际飞行请咨询塞斯纳公司  这是微软模拟飞行2020默认机CJ4的FMS使用手册，由于MSFS2020并非完全体，因此本手册将随时更新 注：波音787中的FMS也由柯林斯制造。即使它们看上去完全不同，也可以应用某些相同的操作逻辑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Citation CJ4 飞行管理系统\飞行计算机(FMS -Flight management system)操作手册[翻译 WIP]">
+<meta property="og:url" content="https://www.minamion.com/2020/08/31/index.html">
 <meta property="og:site_name" content="/dev/null">
-<meta property="og:description" content="所有内容重定向至/dev/null">
+<meta property="og:description" content="本文原文位于此处   仅适用于 微软模拟飞行2020 是否适用于实际飞行请咨询塞斯纳公司  这是微软模拟飞行2020默认机CJ4的FMS使用手册，由于MSFS2020并非完全体，因此本手册将随时更新 注：波音787中的FMS也由柯林斯制造。即使它们看上去完全不同，也可以应用某些相同的操作逻辑">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/4/7/4754f0ab6f2d5eb42cc44e49ce78e7c3cdf1768a.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/7/b/7b132fb0016b061f2732251f7b7267afeaed75f3.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/0/4/0461b28e436380b53680bf011787e51169fee83c.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/6/2/627dfc4d075a2147669ff1a93a59a8778afb65ac.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/8/6/869fea0a60bc391e32e78aa257560f3aaf25b714.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/a/4/a4b16c1271ac791f00d9df960070a04b2789983c.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/4/2/423dad8e2a3b6edc6384d8486b9d0d8a6d4c7031.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/1/f/1f7abe638fb3d772100dc18da2f1746e9a1914ce.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/5/d/5d52d1bb5750132a0bba0c46429924bd47805def.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/3/1/31136df9d3c53b09a75a89f9a7e45bd62cb7b5d4.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/7/4/74e3acd85f7c42af8f54a071562d6f75310730b5.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/5/b/5b9d43b628eebb4995892e66181efc0f4d2dbb51.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/d/5/d5babf505c6141651b1f53a0bac19602b7d867c5.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/e/b/eb9d928d8998d15cce8899cc4fc499d04c4a82fc.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/e/8/e82ec62e43bab787a3daf0c1dac6d76298d17dfe.jpeg">
+<meta property="og:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/e/e/eea62a4b022951e1a7581b8ae1b84f72b3c8a6c9.jpeg">
+<meta property="article:published_time" content="2020-08-31T15:25:32.000Z">
+<meta property="article:modified_time" content="2020-08-31T15:25:32.000Z">
 <meta property="article:author" content="神楽坂南音">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://forums.flightsimulator.com/uploads/default/original/3X/4/7/4754f0ab6f2d5eb42cc44e49ce78e7c3cdf1768a.jpeg">
 
-<link rel="canonical" href="https://www.minamion.com/tags/python/">
+<link rel="canonical" href="https://www.minamion.com/2020/08/31/">
 
 
 <script class="page-configurations">
@@ -39,12 +58,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: python | /dev/null</title>
+  <title>Citation CJ4 飞行管理系统\飞行计算机(FMS -Flight management system)操作手册[翻译 WIP] | /dev/null</title>
   
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-59174808-2"></script>
     <script>
@@ -2901,7 +2920,7 @@ hr {
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -2913,6 +2932,7 @@ hr {
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">输入数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%8C%89%E9%92%AE"><span class="nav-number">2.</span> <span class="nav-text">主要按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FMS-%E8%AE%BE%E7%BD%AE%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">FMS 设置和初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E9%A3%9E%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="nav-number">4.</span> <span class="nav-text">输入飞行计划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E7%A6%BB%E5%9C%BA%E7%A8%8B%E5%BA%8F-SID"><span class="nav-number">5.</span> <span class="nav-text">加载离场程序 (SID)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E9%A3%9E%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="nav-number">6.</span> <span class="nav-text">完成飞行计划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E8%88%AA%E7%82%B9"><span class="nav-number">7.</span> <span class="nav-text">重复航点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%AF%E7%BA%BF%E5%9B%9E%E9%A1%BE"><span class="nav-number">8.</span> <span class="nav-text">路线回顾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B5%B7%E9%A3%9E%E5%92%8C%E7%9D%80%E9%99%86%E7%A8%8B%E5%BA%8F"><span class="nav-number">9.</span> <span class="nav-text">起飞和着陆程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E8%BF%9B%E5%9C%BA%E7%A8%8B%E5%BA%8F-STAR"><span class="nav-number">10.</span> <span class="nav-text">加载进场程序 (STAR)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E9%A3%9E%E6%A8%A1%E5%BC%8F"><span class="nav-number">11.</span> <span class="nav-text">直飞模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E6%95%B4%E6%97%A0%E7%BA%BF%E7%94%B5%E9%80%9A%E4%BF%A1%E5%92%8C%E5%AF%BC%E8%88%AA%E9%A2%91%E9%81%93"><span class="nav-number">12.</span> <span class="nav-text">调整无线电通信和导航频道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E6%95%B4PFD-MFD%E6%98%BE%E7%A4%BA%E5%92%8C%E8%8C%83%E5%9B%B4"><span class="nav-number">13.</span> <span class="nav-text">调整PFD / MFD显示和范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AP-%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E4%BB%AA"><span class="nav-number">14.</span> <span class="nav-text">AP/自动驾驶仪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0"><span class="nav-number">15.</span> <span class="nav-text">性能参数</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -2984,49 +3004,188 @@ hr {
       <div class="main-inner">
         
 
-        <div class="content tag">
+        <div class="content post posts-expand">
           
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">python
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.minamion.com/2020/08/31/">
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2019</span>
+    <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="神楽坂南音">
+      <meta itemprop="description" content="所有内容重定向至/dev/null">
+    </span>
+
+    <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="/dev/null">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Citation CJ4 飞行管理系统\飞行计算机(FMS -Flight management system)操作手册[翻译 WIP]
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-31 23:25:32" itemprop="dateCreated datePublished" datetime="2020-08-31T23:25:32+08:00">2020-08-31</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 ≈</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>本文原文位于<a target="_blank" rel="noopener" href="https://forums.flightsimulator.com/t/how-to-citation-cj4-fms-programming-guide/124457">此处</a></p>
+</blockquote>
+<blockquote>
+<p>仅适用于 微软模拟飞行2020 是否适用于实际飞行请咨询塞斯纳公司</p>
+</blockquote>
+<p>这是微软模拟飞行2020默认机CJ4的FMS使用手册，由于MSFS2020并非完全体，因此本手册将随时更新</p>
+<p>注：波音787中的FMS也由柯林斯制造。即使它们看上去完全不同，也可以应用某些相同的操作逻辑</p>
+<a id="more"></a>
+<hr>
+<h2 id="输入数据"><a href="#输入数据" class="headerlink" title="输入数据"></a>输入数据</h2><p>Here is a sample page. Note the area in light green. Anytime you see a blank square box like this, it means it is a required field. In this case, airport identifiers.</p>
+<p>The yellow circles are called Line Select Keys. Sometimes abbreviated LSK. In this guide, I may mention LSK L6. That would be the left side, 6th key down.</p>
+<p>The red area is called the Scratchpad. This version of the Collins FMS works by typing into the scratchpad, and then “pasting” what you typed into the required field up above. You may also copy some fields from up above, down into the scratchpad using the line select keys.</p>
+<p>To delete an item, first press the CLR DEL key in the lower right side. This puts “CLR” into your scratchpad. Then you paste CLR on top of what you want to delete using the line select keys (LSK). Note that there is a bug and you cannot delete your origin or destination in the sim.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/4/7/4754f0ab6f2d5eb42cc44e49ce78e7c3cdf1768a.jpeg" alt="FPLN - Blank - Copy"></p>
+<h2 id="主要按钮"><a href="#主要按钮" class="headerlink" title="主要按钮"></a>主要按钮</h2><p>The main buttons that you will use are circled in red. Normally you would use the IDX key to return to the Index page, but there is currently a bug that requires you to use the DISPL MENU key to go to the index. This can be confusing, so please report this to [ZenDesk]<br>(<a target="_blank" rel="noopener" href="https://flightsimulator.zendesk.com/hc/en-us">https://flightsimulator.zendesk.com/hc/en-us <span class="badge badge-notification clicks" title="8 clicks">8</span></a>), as the more attention it gets the better.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/7/b/7b132fb0016b061f2732251f7b7267afeaed75f3.jpeg" alt="Page header"></p>
+<p>Also, take note of the page header. Especially for indications that there are additional pages to be displayed. In this example, we are on the FPLN ROUTE page, and there are 4 total pages with data on them. Advance to the next page using the NEXT button on the far right side.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/0/4/0461b28e436380b53680bf011787e51169fee83c.jpeg" alt="FPLN - Blank buttons"></p>
+<hr>
+<h2 id="FMS-设置和初始化"><a href="#FMS-设置和初始化" class="headerlink" title="FMS 设置和初始化"></a>FMS 设置和初始化</h2><p>The first screen that you will see on startup is the STATUS page (incorrectly labeled IDENT). This page is where you will check the date of the Nav database (AIRAC cycle).</p>
+<p>Pressing the R6 LSK (Right line select key next to POS INIT) will take you to the next step.</p>
+<p>While the CJ does not have any IRS to align, it is still recommended to set the GNSS startup position using a copy and paste procedure listed below.</p>
+<p>Push LSK R4 (Right side, 4th down) - labeled with a red 1 in the screenshot<br>This copies the Lat/Long into the “scratchpad”<br>Now push LSK R5 to paste the position into the empty boxes.</p>
+<p>To move onto the next part, push the FPLN button below the screen (the R6 softkey next to Route does not work for some reason)</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/6/2/627dfc4d075a2147669ff1a93a59a8778afb65ac.jpeg" alt="POS INIT 12" title="POS INIT 12"></p>
+<h2 id="输入飞行计划"><a href="#输入飞行计划" class="headerlink" title="输入飞行计划"></a>输入飞行计划</h2><p>The main flight plan is entered from the FPLN page (until Datalink gets modeled!). Type the 4 letter airport identifier into the scratchpad (circled in red) and then paste it into the Origin and Destination fields using the L1 and R1 line select keys. <em>Note:</em> Currently a bug that won’t allow you to clr/delete these fields. So make sure you enter what you want .</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/8/6/869fea0a60bc391e32e78aa257560f3aaf25b714.jpeg" alt="FPLN - TEB to PBI" title="FPLN - TEB to PBI"></p>
+<h2 id="加载离场程序-SID"><a href="#加载离场程序-SID" class="headerlink" title="加载离场程序 (SID)"></a>加载离场程序 (SID)</h2><p>Next go to the DEP / ARR page to load any applicable departure procedures (SID), if available for your airport. (Any missing procedures from the database should be reported to <a target="_blank" rel="noopener" href="https://flightsimulator.zendesk.com/hc/en-us">ZenDesk </a>)</p>
+<p>After pressing DEP / ARR select the departure airport on the left using LSK 1. If you do not see both the departure and arrival airport on this page, check the main flight plan origin and destination fields from the FPLN page.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/a/4/a4b16c1271ac791f00d9df960070a04b2789983c.jpeg" alt="dep arr 1"></p>
+<p>Choose your Departure procedure (SID), transition, and runway. Note that once you select a SID it will hide the runways that do not apply to that departure procedure (and vice-versa)</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/4/2/423dad8e2a3b6edc6384d8486b9d0d8a6d4c7031.jpeg" alt="DEP ARR RUUDY6" title="DEP ARR RUUDY6"></p>
+<h2 id="完成飞行计划"><a href="#完成飞行计划" class="headerlink" title="完成飞行计划"></a>完成飞行计划</h2><p>Now go back to the FPLN (Route) page. It will show the departure procedure on the left. Enter the remaining waypoints one at a time using the scratch pad, and paste them into the right side. (Example below shows ELVAE intersection entered)</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/1/f/1f7abe638fb3d772100dc18da2f1746e9a1914ce.jpeg" alt="Route - first waypoint" title="Route - first waypoint"></p>
+<p>Note the left column is labeled VIA and the right column is labeled TO. Normally airways can be entered in the left side, but the sim is picky about what entry and exit points you can use to enter an airway. Please report a bug using ZenDesk if you encounter one.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/5/d/5d52d1bb5750132a0bba0c46429924bd47805def.jpeg" alt="Route - airway" title="Route - airway"></p>
+<h2 id="重复航点"><a href="#重复航点" class="headerlink" title="重复航点"></a>重复航点</h2><p>Sometimes when entering a waypoint you may see a box like this:</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/3/1/31136df9d3c53b09a75a89f9a7e45bd62cb7b5d4.jpeg" alt="Route - duplicate waypoint" title="Route - duplicate waypoint"></p>
+<p>This means there are multiple waypoints in the nav database that have the same identifier. Pick the correct one (normally this is the top one, which should be the closest)</p>
+<h2 id="路线回顾"><a href="#路线回顾" class="headerlink" title="路线回顾"></a>路线回顾</h2><p>Pressing the legs page will allow us to review what we entered in the flight plan page. For the most part, all modifications after takeoff will be done from the LEGS page, and not the FPLN page. This is also where you enter VNAV altitudes, once implemented. Due to a bug, occasionally the route page may look like this (not sure why):</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/7/4/74e3acd85f7c42af8f54a071562d6f75310730b5.jpeg" alt="Legs Page - Review" title="Legs Page - Review"></p>
+<h2 id="起飞和着陆程序"><a href="#起飞和着陆程序" class="headerlink" title="起飞和着陆程序"></a>起飞和着陆程序</h2><p>The FMS has the ability to compute takeoff and landing speeds based on weight and weather conditions. Unfortunately this is not modeled in the sim. You can, however, use the PERF page to enter manually calculated V-speeds (the calculated speeds aren’t accurate). There are 2 caveats however. You can only enter takeoff speeds (not landing). And due to a bug they do not come up when pressing the PERF button. Instead you must hit DISPL MENU and then the L5 Line Select Key for Takeoff.</p>
+<p>Form more info on takeoff or landing speeds, see the Performance Numbers section below.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/5/b/5b9d43b628eebb4995892e66181efc0f4d2dbb51.jpeg" alt="PERF - TO" title="PERF - TO"></p>
+<h2 id="加载进场程序-STAR"><a href="#加载进场程序-STAR" class="headerlink" title="加载进场程序 (STAR)"></a>加载进场程序 (STAR)</h2><p>If the destination airport has an arrival procedure, it is loaded in the same way as the departure procedure (except using the right side after pushing the DEP ARR button)</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/d/5/d5babf505c6141651b1f53a0bac19602b7d867c5.jpeg" alt="DEP ARR - STAR" title="DEP ARR - STAR"></p>
+<h2 id="直飞模式"><a href="#直飞模式" class="headerlink" title="直飞模式"></a>直飞模式</h2><p>To go direct to a new waypoint or one that is in your current route, use the DIR key on the left side. Then you can either type in a new waypoint in the scratchpad and paste it into L1. Or, if the waypoint is already on your route you can select it to bring it into the scratchpad, and paste it into L1. Note you may have to use the NEXT key to pick waypoints further down on your route.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/e/b/eb9d928d8998d15cce8899cc4fc499d04c4a82fc.jpeg" alt="Direct To" title="Direct To"></p>
+<hr>
+<h2 id="调整无线电通信和导航频道"><a href="#调整无线电通信和导航频道" class="headerlink" title="调整无线电通信和导航频道"></a>调整无线电通信和导航频道</h2><p>All radio tuning in the sim is done through the TUN page of the CDU (FMS). This includes radios for BOTH communications and navigation, such as an ILS. Press the TUN button to bring up the following page:</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/e/8/e82ec62e43bab787a3daf0c1dac6d76298d17dfe.jpeg" alt="FMS Tune" title="FMS Tune"></p>
+<p>In the sim, you must use a decimal point, example 121.5 will work, but 1215 will not. Also, after loading an approach in the FMS, the sim will not auto tune the ILS frequency and set the inbound course like the real airplane.</p>
+<p>ADF Tuning is done on page 2 of the Radio Tuning page.</p>
+<h2 id="调整PFD-MFD显示和范围"><a href="#调整PFD-MFD显示和范围" class="headerlink" title="调整PFD / MFD显示和范围"></a>调整PFD / MFD显示和范围</h2><p>This section is a work in progress, but to get the ball rolling, the left side primary flight display (PFD) is mostly controlled using the control panel above it. The button labeled PFD menu will allow you to change the format and range of the PFD. You can also change the altimeter units (Hpa, inches, meters). Note that changing the range also affects the center MFD as well.</p>
+<p>To adjust the MFD map orientation, etc, use the LWR MENU button on the control panel under the MFD. The knobs in the screenshot (inner and outter) can be used within the menu on the PFD/MFD.</p>
+<p><img src="https://forums.flightsimulator.com/uploads/default/original/3X/e/e/eea62a4b022951e1a7581b8ae1b84f72b3c8a6c9.jpeg" alt="Map Scale" title="Map Scale"></p>
+<h2 id="AP-自动驾驶仪"><a href="#AP-自动驾驶仪" class="headerlink" title="AP/自动驾驶仪"></a>AP/自动驾驶仪</h2><p>The Autopilot section is a major work in progress. A few quick notes however.</p>
+<ul>
+<li>TO/GA mode is not included at this time.</li>
+<li>Arming HDG and PIT is recommended for takeoff</li>
+<li>Can climb in VS or PIT (or FLC).</li>
+<li>FLC maintains selected vertical speed by adjusting the pitch.</li>
+<li>The CJ does not have an Autothrottle (the speed bug is for reference and FLC adjustment)</li>
+<li>VNAV is not implemented at this time</li>
+</ul>
+<p>To Capture an ILS, you must change the NAV SRC from FMS 1 to VOR/LOC using the PFD menu button on the control panel above the PFD. Also, no autopilot will capture the glideslope from above (if you are too high). You must use VS to dive down and capture it in that scenario.</p>
+<p>Do not press the ALT button! About the only exception is if you want to immediately stop your climb / descent at the current altitude. General order is to set the altitude preselector first, then pick a vertical mode (VS, PIT, FLC) and then adjust your rate (and engage the autopilot)</p>
+<h2 id="性能参数"><a href="#性能参数" class="headerlink" title="性能参数"></a>性能参数</h2><p>这是一些在MSFS中应该起作用的参数，不是现实中的参数。</p>
+<p><strong>起飞速度 -</strong></p>
+<p><em>17,100 lbs (Flaps 0°)</em><br><em>Sea Level - 15° C temp</em></p>
+<p>V1 108<br>VR 115<br>V2 128<br>Distance 3920’ takeoff roll</p>
+<p><em>起飞速度 - 17,100 lbs (襟翼 15°)</em></p>
+<p>V1 99<br>VR 104<br>V2 117<br>Distance: 3410’ takeoff roll<br>127kts 时收起襟翼</p>
+<p><em>爬升</em><br>Normal Climb: 240 kts transitioning to Mach 0.64<br>Single Engine Climb: 140 kts (VENR)</p>
+<p><em>巡航:</em><br>FL410 (ISA Temp)<br>99.0% N1<br>Fuel Flow: 1154 lbs / hr total<br>220 kts indicated / 431 true (Mach .75)<br>Range: 37 nm / 100 lbs of fuel (no wind)</p>
+<p><em>下降:</em> (no wind)<br>21 min / 130 nm at 2,000 feet per minute VS.<br>17 min / 100 nm at 3,000 feet per minute VS.</p>
+<p><em>进近</em><br>进近速度 Ref + 10 kts<br>进近设置: 55-60% N1 for 200 kts, configuring gear and flaps to slow to approach speeds<br>盘旋进近: 最大襟翼</p>
+<p>进近功率设置: (once fully configured inbound on glide slope)<br>55% - 2 engine<br>65% - 1 engine</p>
+<p><em>着陆速度- VREF (襟翼 35°):</em></p>
+<p>113 kts at 15,660 lbs (最大着陆重量)<br>98 kts at 12,000 lbs</p>
+<hr>
+
     </div>
 
-  <article itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated" datetime="2019-06-03T23:31:47+08:00" content="2019-06-03">
-          06-03
-        </time>
-      </div>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>神楽坂南音
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.minamion.com/2020/08/31/" title="Citation CJ4 飞行管理系统\飞行计算机(FMS -Flight management system)操作手册[翻译 WIP]">https://www.minamion.com/2020/08/31/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2019/06/03/" itemprop="url">
-            <span itemprop="name">给ws215i编译内核所碰到的各种坑</span>
-          </a>
-      </div>
 
-    </header>
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/09/" rel="prev" title="NFC名片-从入门到秃头[WIP]">
+      <i class="fa fa-chevron-left"></i> NFC名片-从入门到秃头[WIP]
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
