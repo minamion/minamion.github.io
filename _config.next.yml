@@ -183,7 +183,7 @@ site_state: true
 social:
   GitHub: https://github.com/minamion/ || github
   #E-Mail: mailto:yourname@gmail.com || envelope
-  Weibo: https://weibo.com/minamion || weibo
+  #Weibo: https://weibo.com/minamion || weibo
   #Google: https://plus.google.com/yourname || google
   Twitter: https://twitter.com/cn_Minamion || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
