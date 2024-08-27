@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/SeaSlug.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/SeaSlug.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/SeaSlug.png">
+  <link rel="mask-icon" href="/images/SeaSlug.png" color="#222">
+  <meta name="google-site-verification" content="Z-4dUnDvPo0Zcs9AAXLYMM4QXQLvBh3HU33QRI0GOXI">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"seaslug.moe","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"style":null,"show_result":false},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"waline","storage":true,"lazyload":true,"nav":null,"activeClass":"waline"},"stickytabs":false,"motion":{"enable":true,"async":true,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关键词：闻上云 ws215i 内核编译ATOM+2G+4G 的诡异配置电子垃圾">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给 ws215i 编译内核所碰到的各种坑">
+<meta property="og:url" content="https://seaslug.moe/2019/06/03/index.html">
+<meta property="og:site_name" content="&#x2F;dev&#x2F;null">
+<meta property="og:description" content="关键词：闻上云 ws215i 内核编译ATOM+2G+4G 的诡异配置电子垃圾">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://seaslug.moe/image/%E7%BB%99ws215i%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%89%80%E7%A2%B0%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E5%9D%91/1655300652823.png">
+<meta property="article:published_time" content="2019-06-03T15:31:47.000Z">
+<meta property="article:modified_time" content="2024-08-27T07:31:29.438Z">
+<meta property="article:author" content="塩漬けウミウシ">
+<meta property="article:tag" content="硬件">
+<meta property="article:tag" content="Linux开发">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://seaslug.moe/image/%E7%BB%99ws215i%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%89%80%E7%A2%B0%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E5%9D%91/1655300652823.png">
+
+
+<link rel="canonical" href="https://seaslug.moe/2019/06/03/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://seaslug.moe/2019/06/03/","path":"2019/06/03/","title":"给 ws215i 编译内核所碰到的各种坑"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>给 ws215i 编译内核所碰到的各种坑 | /dev/null</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59174808-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-59174808-2","only_pageview":false,"measure_protocol_api_secret":null}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+
+
+
+<link rel="dns-prefetch" href="waline-server-iota-eight.vercel.app">
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">/dev/null</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">ウミウシ海底譚</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li><li class="menu-item menu-item-lab"><a href="/Lab/" rel="section"><i class="flask fa-fw"></i>Lab</a></li><li class="menu-item menu-item-项目列表"><a href="/project/" rel="section"><i class="archive fa-fw"></i>项目列表</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E4%BB%B6%E9%83%A8%E5%88%86%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">硬件部分：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E9%83%A8%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">系统部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E6%A0%B8%E9%83%A8%E5%88%86"><span class="nav-number">3.</span> <span class="nav-text">内核部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BB%E6%89%BE%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">寻找源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">3.2.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90"><span class="nav-number">3.3.</span> <span class="nav-text">完成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E5%A4%96%E8%AF%9D"><span class="nav-number">5.</span> <span class="nav-text">题外话</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="塩漬けウミウシ"
+      src="/assets/Dm8OgMv9_400x400.jpg">
+  <p class="site-author-name" itemprop="name">塩漬けウミウシ</p>
+  <div class="site-description" itemprop="description">所有内容重定向至/dev/null</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/minamion/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;minamion&#x2F;" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:minamion@Outlook.com" title="E-Mail → mailto:minamion@Outlook.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/minamion" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;minamion" rel="noopener me" target="_blank"><i class="weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://oshwhub.com/Rhode-Eng-Dep" title="OshwHub硬件开源-社团项目 → https:&#x2F;&#x2F;oshwhub.com&#x2F;Rhode-Eng-Dep" rel="noopener me" target="_blank"><i class="oshwhub fa-fw"></i>OshwHub硬件开源-社团项目</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://oshwhub.com/Minamion" title="OshwHub硬件开源-个人项目 → https:&#x2F;&#x2F;oshwhub.com&#x2F;Minamion" rel="noopener me" target="_blank"><i class="oshwhub fa-fw"></i>OshwHub硬件开源-个人项目</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="link fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://syra-ti.icu/" title="https:&#x2F;&#x2F;syra-ti.icu&#x2F;" rel="noopener" target="_blank">白茶SyraTi</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://alicem.top/" title="https:&#x2F;&#x2F;alicem.top&#x2F;" rel="noopener" target="_blank">爱丽丝的人偶屋</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://stlab.ar.gp/" title="https:&#x2F;&#x2F;stlab.ar.gp&#x2F;" rel="noopener" target="_blank">王乌龟的跳板机吧</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://seaslug.moe/2019/06/03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/assets/Dm8OgMv9_400x400.jpg">
+      <meta itemprop="name" content="塩漬けウミウシ">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="/dev/null">
+      <meta itemprop="description" content="所有内容重定向至/dev/null">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="给 ws215i 编译内核所碰到的各种坑 | /dev/null">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          给 ws215i 编译内核所碰到的各种坑
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-03 23:31:47" itemprop="dateCreated datePublished" datetime="2019-06-03T23:31:47+08:00">2019-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-08-27 15:31:29" itemprop="dateModified" datetime="2024-08-27T15:31:29+08:00">2024-08-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A1%AC%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">硬件</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A1%AC%E4%BB%B6/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A1%AC%E4%BB%B6/%E5%AD%A6%E4%B9%A0/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+    <span class="post-meta-item-icon">
+      <i class="far fa-comment"></i>
+    </span>
+    <span class="post-meta-item-text">Waline：</span>
+  
+    <a title="waline" href="/2019/06/03/#waline" itemprop="discussionUrl">
+      <span class="post-comments-count waline-comment-count" data-path="/2019/06/03/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>关键词：闻上云 ws215i 内核编译<br>ATOM+2G+4G 的诡异配置电子垃圾</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="硬件部分："><a href="#硬件部分：" class="headerlink" title="硬件部分："></a>硬件部分：</h2><p><img src="/image/%E7%BB%99ws215i%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%89%80%E7%A2%B0%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E5%9D%91/1655300652823.png" alt="主板图" title="主板图"></p>
+<ul>
+<li>Intel ATOM CE5315 SOC（图中橙色框）</li>
+<li>四块三星 512M 内存颗粒（图中绿色框）</li>
+<li>4G 的闪迪 SD1N7DP2-40 EMMC（图中红色框）</li>
+<li>板载一个用途未知的 pcie 接口（图中粉色框，可能是设计之初用于 WiFi 模块但是因不明原因没有安装。）</li>
+<li>IO:</li>
+<li>USB3.0*2</li>
+<li>HDMI</li>
+<li>RJ45 千兆网口</li>
+</ul>
+<p>  首先简单介绍一下 ws215i 的硬件，年代久远的 atom soc，只有 4G 而且还是 emmc 的存储颗粒已经给开发造成了不小的困难；不过所幸官方有提供内核源代码，然而这里就是一个坑了。</p>
+<h2 id="系统部分"><a href="#系统部分" class="headerlink" title="系统部分"></a>系统部分</h2><p>OpenMediaVault (下文简称 OMV) 无需过多介绍，开源 NAS 系统，基于 debian，界面扁平化，简单易用还稳定 (我自己都不信)<br>然而刚开始就碰到了第一个坑，虽然这个坑比较好解决<br>在运行 apt update 或 omv-update 以及安装任何 deb 包后，都会有这样一段报错</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception ignored <span class="keyword">in</span>:.remove at <span class="number">0x76125420</span>&gt;Traceback (most recent call last):  File <span class="string">"/usr/lib/python3.5/weakref.py"</span>, line <span class="number">117</span>, <span class="keyword">in</span> removeTypeError: <span class="string">'NoneType'</span> <span class="built_in">object</span> <span class="keyword">is</span> <span class="keyword">not</span> callableException ignored <span class="keyword">in</span>:.remove at <span class="number">0x76125420</span>&gt;</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">&nbsp; File <span class="string">"/usr/lib/python3.5/weakref.py"</span>, line <span class="number">117</span>, <span class="keyword">in</span> remove</span><br><span class="line">TypeError: <span class="string">'NoneType'</span> <span class="built_in">object</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="built_in">callable</span></span><br></pre></td></tr></tbody></table></figure>
+<p>解决办法也很简单</p>
+<p><code>vim /usr/lib/python3.5/weakref.py</code></p>
+<p>将</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">remove</span>(<span class="params">wr, selfref=ref(<span class="params">self</span>)</span>):</span><br></pre></td></tr></tbody></table></figure>
+<p>修改为</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">remove</span>(<span class="params">wr, selfref=ref(<span class="params">self</span>),_atomic_removal=_remove_dead_weakref</span>):</span><br></pre></td></tr></tbody></table></figure>
+<p>将</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_remove_dead_weakref(d, wr.key)</span><br></pre></td></tr></tbody></table></figure>
+<p>修改为</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_atomic_removal(d, wr.key)</span><br></pre></td></tr></tbody></table></figure>
+<p>即可解决<br>然而这才刚过第一关，更新完软件包，配置完 raid，加载增强插件 OMV-EXTRAS, 配置完 webdav 后，到了 docker 部分，这里是第二个坑。</p>
+<h2 id="内核部分"><a href="#内核部分" class="headerlink" title="内核部分"></a>内核部分</h2><h3 id="寻找源代码"><a href="#寻找源代码" class="headerlink" title="寻找源代码"></a>寻找源代码</h3><p>docker 安装完报错无法启动，经过查看 log 显示缺少 aufs 支持和 nf_nat 模块，询问刷机包作者答复官方并没有给出内核源代码，本应有源代码的仓库中只有一个 readme。<br>官方 GitHub 仓库 <a target="_blank" rel="noopener" href="https://github.com/wisnuc">https://github.com/wisnuc</a> 中确实并没有内核源代码，然而提交者 @matianfu-wisnuc 所 commit 的另一个仓库指向了一条线索，该账号于 <a target="_blank" rel="noopener" href="https://github.com/matianfu/ws215i">https://github.com/matianfu/ws215i</a> 中提交了一份内核的 deb 文件，而这个仓库确实如作者所说只有一个 readme，并没有源代码，然而 readme 中的内容又引出一条新的线索</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential linux-source kernel-package libncurses5-dev fakeroot</span><br><span class="line">cd barcelona-4.3.3</span><br><span class="line">make -j16</span><br><span class="line">make-kpkg --rootcmd=fakeroot --initrd --jobs=8 --append-to-version=.001 --revision=001 kernel_image kernel_headers</span><br></pre></td></tr></tbody></table></figure>
+<p>其中 barcelona-4.3.3 文件夹所指的 应该是同账号下另一个仓库 <a target="_blank" rel="noopener" href="https://github.com/matianfu/barcelona-4.3.3">https://github.com/matianfu/barcelona-4.3.3</a> 而根据该仓库的 commits 记录，其确实为加入 CE53XX 系列 soc 驱动的定制版 4.3.3 内核 （足以可见该公司 GitHub 使用是多么的不规范）</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>笔者为节约时间选择使用 Windows Subsystem for Linux 进行编译<br>其中有两个坑 </p>
+<ul>
+<li><p>gcc6 + 的一个已知问题 内核编译不支持使用 PIC 模式：</p>
+<p>在 gcc 6 + 版本中默认启用 PIE，而这是 gcc 的一个已知问题，目前为止官方并没有进行修复，因此只能修改 makefile 文件：在 <code>KBUILD_CFLAGS</code> 后加上 <code>-fno-pie</code></p>
+</li>
+<li><p>Function not implemented This may be due to a lack of SYSV IPC support.</p>
+<p>WSL 下 fakeroot 存在问题，可以通过 <code>sudo update-alternatives --set fakeroot /usr/bin/fakeroot-tcp</code> 进行解决</p>
+</li>
+</ul>
+<h3 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h3><p>运行 <code>make menuconfig</code> 并勾选 nf_nat、iptable 及其下全部支持、overlayfs 文件系统支持<br>运行</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j16 &amp;&amp; make-kpkg --rootcmd=fakeroot --initrd --jobs=8 kernel_image kernel_headers</span><br></pre></td></tr></tbody></table></figure>
+<p>即可编译完成并打包 deb 文件在上一层目录，将其上传至 nas 中并 <code>dpkg -i</code> 安装并重启即刻顺利使用 docker</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这台设备确实是挺非传统的，没有传统的 BIOS，存储设备也是非传统的 emmc，甚至连 soc 也是主线内核没有兼容的，but it work</p>
+<h2 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h2><p>由于这台设备的 emmc 只有 4gb 所以 docker 的文件不建议放在 emmc 内，可以使用 <code>ln -s</code> 软链接链接至 raid 下</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/image/afdian-%E7%A5%9E%E6%A5%BD%E5%9D%82%E5%8D%97%E9%9F%B3.jpg" alt="塩漬けウミウシ 爱发电">
+        <span>爱发电</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>塩漬けウミウシ
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://seaslug.moe/2019/06/03/" title="给 ws215i 编译内核所碰到的各种坑">https://seaslug.moe/2019/06/03/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E7%A1%AC%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> 硬件</a>
+              <a href="/tags/Linux%E5%BC%80%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> Linux开发</a>
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/06/20/" rel="next" title="Hualu WifiDock AR9331 无线中继魔改笔记（？">
+                  Hualu WifiDock AR9331 无线中继魔改笔记（？ <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="waline"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="user"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">塩漬けウミウシ</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">15k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">14 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://lib.baomitu.com/pdfobject/2.3.0/pdfobject.min.js","integrity":"sha256-JJZNsid68vnh3/zyj0lY9BN5ynxVX/12XgOa1TlaYN0="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","mhchem":false,"js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="waline" type="application/json">{"lang":"zh-cn","enable":true,"serverURL":"waline-server-iota-eight.vercel.app","cssUrl":"https://unpkg.com/@waline/client@v2/dist/waline.css","commentCount":true,"pageview":false,"placeholder":"请文明评论呀","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"visitor":true,"recordIP":true,"comment_count":true,"requiredFields":["nick","mail"],"libUrl":"//unpkg.com/@waline/client@v2/dist/waline.js","el":"#waline","comment":true,"path":"/2019/06/03/"}</script>
+<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css">
+<script>
+document.addEventListener('page:loaded', () => {
+  NexT.utils.loadComments(CONFIG.waline.el).then(() =>
+    NexT.utils.getScript(CONFIG.waline.libUrl, { condition: window.Waline })
+  ).then(() => 
+    Waline.init(Object.assign({}, CONFIG.waline,{ el: document.querySelector(CONFIG.waline.el) }))
+  );
+});
+</script>
+
+</body>
+</html>

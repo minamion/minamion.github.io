@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>硬件随笔 - 复活第三代 Kindle Fire HD 7&quot; 记录</title>
+      <link href="/2023/06/22/"/>
+      <url>/2023/06/22/</url>
+      
+        <content type="html"><![CDATA[<p>简单记录下复活 70 块买来的两块 7 寸 Kindle Fire HD 的过程</p><span id="more"></span><p><img src="http://g-ecx.images-amazon.com/images/G/01/kindle/dp/2013/KS/feature-techspecs._V320617749_.jpg" alt="外观" title="外观"><br>这玩意非常 非常便宜，最初采购来用于 Home Assistant 中控屏幕或简单传感器显示，但是由于亚马逊很久以前就决定停止提供更新，它被卡在了 FireOS 4.x , 也就是 Android 4.4.1， 这个版本没有 webview 没有 TLS1.2 几乎所有现代 APP 都无法运行<br>于是计划搁置了一年多，最近闲来无事又翻出来折腾它</p><h2 id="1-一切的基础：解锁Bootloader和刷入TWRP"><a href="#1-一切的基础：解锁Bootloader和刷入TWRP" class="headerlink" title="1.一切的基础：解锁Bootloader和刷入TWRP"></a>1. 一切的基础：解锁 Bootloader 和刷入 TWRP</h2><p>Kindle Fire HD 无法通过常见的电源 + 音量进入 fastboot 模式，亚马逊在工厂 / 维修中心使用一种特殊电缆将 Kindle 置于 bootloader 覆盖模式，如果你和我一样买到的是已经 root 的版本可以跳过以下内容</p><h3 id="1-1-1-fastboot-电缆"><a href="#1-1-1-fastboot-电缆" class="headerlink" title="1.1-1 fastboot 电缆"></a>1.1-1 fastboot 电缆</h3><p>fastboot 电缆的制作非常简单，只需要上拉第四根针脚也就是 ID 针脚到 VCC（注意，如果你不小心接到了 2 Data- 、3 Data+ 或 5 GND，你将会摧毁这块平板以及你电脑的 USB 芯片）<br><img src="https://b3logfile.com/file/2021/05/micro-usb_%E5%85%AC%E5%A4%B4%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89-e8873e09.png" alt="接口定义" title="接口定义"><br>简单飞线一下就可以用这条线进入 Fastboot</p><h3 id="1-1-1-通过adb进入fastboot"><a href="#1-1-1-通过adb进入fastboot" class="headerlink" title="1.1-1 通过adb进入fastboot"></a>1.1-1 通过 adb 进入 fastboot</h3><p>如果你已经有 root 权限，可以简单通过 ADB 设置启动项</p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell su -c "dd if=/dev/zero of=/dev/block/platform/omap_hsmmc.1/by-name/boot bs=1 count=1 seek=848"</span><br><span class="line">adb reboot</span><br></pre></td></tr></tbody></table></figure><h3 id="1-2-刷入TWRP"><a href="#1-2-刷入TWRP" class="headerlink" title="1.2 刷入TWRP"></a>1.2 刷入 TWRP</h3><p>TWRP 地址：<a href="https://twrp.me/amazon/amazonsoho.html">https://twrp.me/amazon/amazonsoho.html</a></p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fastboot oem format</span><br><span class="line">fastboot flash boot hijack.img</span><br><span class="line">fastboot flash system system.img</span><br><span class="line">fastboot continue</span><br></pre></td></tr></tbody></table></figure><p>现在应该看到带有橙色下划线的亚马逊徽标</p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fastboot flash boot recovery.img</span><br><span class="line">fastboot oem format</span><br><span class="line">fastboot continue</span><br></pre></td></tr></tbody></table></figure><p>至此 TWRP 就刷入完成了，可以进行下一步了</p><h3 id="1-3刷入第三方系统"><a href="#1-3刷入第三方系统" class="headerlink" title="1.3刷入第三方系统"></a>1.3 刷入第三方系统</h3><p>目前适用于该设备的最新第三方 rom 是:<a href="https://evervolv.com/devices/soho%EF%BC%8C%E5%88%B7%E5%85%A5%E4%BB%96%E5%9C%A8%E8%BF%99%E5%8F%B02013%E5%B9%B4%E7%9A%84%E8%AE%BE%E5%A4%87%E4%B8%8A%E8%8E%B7%E5%BE%97Android">https://evervolv.com/devices/soho，刷入他在这台 2013 年的设备上获得 Android</a> 7.1.2。 不过考虑到该设备的 CPU 是德州仪器 OMAP 4460 Dual-core 1.5 GHz Cortex-A9，内存只有 1GB，不建议当作正常 Android 设备使用，本场景下用于配合 kiosk 浏览器作为固定显示屏。<br>适用于这个版本的 supersu 是 SR5-SuperSU-v2.82-SYSTEMMODE  可以在这里下载:<a href="https://forum.xda-developers.com/t/supersu-system-mode-2-82-sr5.3286120/">https://forum.xda-developers.com/t/supersu-system-mode-2-82-sr5.3286120/</a></p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb shell twrp wipe cache</span><br><span class="line">adb shell twrp wipe dalvik</span><br><span class="line">adb sideload</span><br><span class="line">adb sideload ev_soho-7.1.2-testing-2017.07.20.zip </span><br><span class="line">adb sideload</span><br><span class="line">adb sideload SR5-SuperSU-v2.82-SYSTEMMODE.zip</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 硬件 </category>
+          
+          <category> 学习 </category>
+          
+          <category> Android </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
+            
+            <tag> Android </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>随笔 - Maya 在 IntelCPU 上崩溃的解决办法</title>
+      <link href="/2023/04/06/"/>
+      <url>/2023/04/06/</url>
+      
+        <content type="html"><![CDATA[<h3 id="简述："><a href="#简述：" class="headerlink" title="简述："></a>简述：</h3><p>Maya2020 及其之前版本使用的 Python2.7，其附带的 Openssl 1.0.2.g 在 Intel10 11 12 代会遇到 OpenSSL1.0.2.g 错误地使用&nbsp;rax 寄存器的 <em>sha1 asm</em> 例程导致崩溃的问题 该问题应在&nbsp;<em><strong>OpenSSL 1.0.2i</strong></em>&nbsp;和更新版本中得到解决 本文附带一个临时解决办法</p><span id="more"></span><h3 id="解决办法："><a href="#解决办法：" class="headerlink" title="解决办法："></a>解决办法：</h3><ul><li>转到控制面板 &gt; 系统 &gt; 高级系统设置 &gt; 环境变量</li><li><code>添加 OPENSSL_ia32cap=~0x200000200000000</code></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 3D </category>
+          
+          <category> 工作随笔 </category>
+          
+          <category> Maya </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 3D </tag>
+            
+            <tag> Maya </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>随笔 - Jetson 配置 &amp; Jetson 集群.md</title>
+      <link href="/2022/07/17/"/>
+      <url>/2022/07/17/</url>
+      
+        <content type="html"><![CDATA[<p>友人赠送了一台 NVIDIA® Jetson Nano™ Developer Kit (4GB) 和一台 NVIDIA® Jetson Xavier™ NX，简单做下折腾记录</p><span id="more"></span><h2 id="到手准备"><a href="#到手准备" class="headerlink" title="到手准备"></a>到手准备</h2><p>首先是电源的准备，Nano 的基板左侧有一个 5V DC 输入 右侧有一个 MicroUSB (看 PCB 上的预留焊盘应该也可以改成 TypeC) 两者均可供电，DC 输入通过 DC 口边上的 DC EN 跳线实现（有人插上 USB 没拔掉跳线半天没亮灯还以为烧了我不说是谁），USB 口可以使用树莓派的 5V 4A 电源，可以开启满血 20W 模式。</p><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658062784807.png" alt="DCEN跳线位置"> </p><p>NX 也是左侧一个 DC 右侧一个 MicroUSB 但是 NX 的 DC 是 9-19V 5A MAX 宽输入，右侧 USB 仅限数据传输使用，不能用作供电<br><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658064056875.png" alt="1658064056875"></p><h2 id="系统烧录"><a href="#系统烧录" class="headerlink" title="系统烧录"></a>系统烧录</h2><p>虽然官方文档推荐 microSD 卡大小，Nano 是 32G NX 是 16G, 但是官方 img 镜像的大小是 Nano 15G NX 17G，令人不禁怀疑是不是标反了。<br>Nano 的使用很简单，和树莓派一样，烧录 microSD，插电开机就能用了。NX 如果只使用 microSD 卡也是如此，但是 NX 下方有一条 nVME 槽，使用 SSD 显然比 tf 卡快速稳定许多。</p><p>但是如果想把系统安装在 ssd 中还需要一番折腾，jpack5.0 前需要 tf 卡安装系统后手动克隆到 ssd 并且是走 tf 卡启动后脚本挂载目录，非常原始。5.0 后可以通过 SDK manager 直接安装系统到 ssd，但是 SDK manager 有系统要求：Ubuntu 16.04, 18.04 and 20.04 on x86_64 system 或者 CentOS/RHEL 7.6, 8.0 and 8.2 on x86_64 system<br>而且因为走 SDK manager 安装是交叉编译 会需要大量时间 官方文档介绍需要一个半小时 实际因为网络情况可能得四五个小时起步</p><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658063013209.png" alt="1658063013209"><br><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658063657841.png" alt="1658063657841"></p><h2 id="系统精简-amp-调优"><a href="#系统精简-amp-调优" class="headerlink" title="系统精简&amp;调优"></a>系统精简 &amp; 调优</h2><p>Nano 如果使用 16G microSD 卡，可以删除 gnome 使用自带的 lxde、libreoffice、本地 repo 节省 1G 内存和接近 2G 的 tf 卡空间<br>NX 同理 但是相比只有 4G 内存的 Nano 还是没有节省的必要（不过既然要作为 k3s 节点使用 反正桌面也用不上）</p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># Step 1, remove office</span></span></span><br><span class="line">sudo apt autoremove -y</span><br><span class="line">sudo apt clean</span><br><span class="line">sudo apt remove thunderbird libreoffice-* -y</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"> Step 2, Remove <span class="built_in">local</span> repos</span></span><br><span class="line">sudo apt purge cuda-repo-l4t-*local* libvisionworks-*repo -y</span><br><span class="line">sudo rm /etc/apt/sources.list.d/cuda*local* /etc/apt/sources.list.d/visionworks*repo*</span><br><span class="line">sudo rm -rf /usr/src/linux-headers-*</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># Step 3,  remove gnome:</span></span></span><br><span class="line">sudo apt-get purge gnome-shell ubuntu-wallpapers-bionic light-themes chromium-browser* libvisionworks libvisionworks-sfm-dev -y</span><br><span class="line">sudo apt-get autoremove -y</span><br><span class="line">sudo apt clean -y</span><br></pre></td></tr></tbody></table></figure><h3 id="jtop安装"><a href="#jtop安装" class="headerlink" title="jtop安装"></a>jtop 安装</h3><p>Jtop 是一个实时查看和控制 NVIDIA Jetson 的状态的小工具，能非常方便地看到当前 Jetson 机器上的各种完整信息，一般在首页就可以读取到很丰富的数据信息 </p><ul><li>ALL:<br>包含模块运行信息包括：CPU、内存、GPU、磁盘、风扇、jetson_clock 状态、NVPModel 等等</li><li> GPU:<br>实时 GPU 状态</li><li> CPU<br>实时 CPU 状态</li><li> CTRL<br>可以控制的项目，如风扇和功率</li><li> INFO<br>Lib 库、CUDA、Serial Number、Interface 等信息 </li></ul><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-pip -y</span><br><span class="line">sudo -H pip3 install -U jetson-stats</span><br></pre></td></tr></tbody></table></figure><h2 id="Jetson集群！之-准备工作"><a href="#Jetson集群！之-准备工作" class="headerlink" title="Jetson集群！之 准备工作"></a>Jetson 集群！之 准备工作</h2><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo "`id -nu` ALL=(ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/`id -nu`</span><br><span class="line">sudo systemctl mask snapd.service apt-daily.service apt-daily-upgrade.service</span><br><span class="line">sudo systemctl mask apt-daily.timer apt-daily-upgrade.timer</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade -y</span><br><span class="line">sudo apt autoremove -y</span><br></pre></td></tr></tbody></table></figure><h3 id="禁用GUI模式，默认是启用的，会消耗资源"><a href="#禁用GUI模式，默认是启用的，会消耗资源" class="headerlink" title="禁用GUI模式，默认是启用的，会消耗资源:"></a>禁用 GUI 模式，默认是启用的，会消耗资源:</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl set-default multi-user.target</span><br></pre></td></tr></tbody></table></figure><p>记住，这样做，你的 Jetson 将启动到文本模式。但是，如果需要，您可以通过将默认系统模式重置为 “graphics.target” 来改回桌面环境。</p><h3 id="确认你的NANO或NX是在最大性能模式下"><a href="#确认你的NANO或NX是在最大性能模式下" class="headerlink" title="确认你的NANO或NX是在最大性能模式下:"></a>确认你的 NANO 或 NX 是在最大性能模式下:</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nvpmodel -m 0</span><br></pre></td></tr></tbody></table></figure><p>这通常是一个默认设置。然而最好还是检查一下。低功耗 (5W) 模式降低了板的计算性能。</p><h3 id="禁用swap——swap会导致Kubernetes的问题"><a href="#禁用swap——swap会导致Kubernetes的问题" class="headerlink" title="禁用swap——swap会导致Kubernetes的问题:"></a>禁用 swap——swap 会导致 Kubernetes 的问题:</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo swapoff -a</span><br></pre></td></tr></tbody></table></figure><h3 id="将NVidia运行时设置为Docker中的默认运行时。对于这个编辑-x2F-etc-x2F-docker-x2F-daemon-json文件，所以它看起来像这样"><a href="#将NVidia运行时设置为Docker中的默认运行时。对于这个编辑-x2F-etc-x2F-docker-x2F-daemon-json文件，所以它看起来像这样" class="headerlink" title="将NVidia运行时设置为Docker中的默认运行时。对于这个编辑/etc/docker/daemon.json文件，所以它看起来像这样:"></a>将 NVidia 运行时设置为 Docker 中的默认运行时。对于这个编辑 /etc/docker/daemon.json 文件，所以它看起来像这样:</h3><figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"default-runtime"</span><span class="punctuation">:</span><span class="string">"nvidia"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"runtimes"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"nvidia"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">            <span class="attr">"path"</span><span class="punctuation">:</span> <span class="string">"nvidia-container-runtime"</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">"runtimeArgs"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">}</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure><p>Docker® 引擎使用的默认运行时是 runc 更改默认运行时为 nvidia-container-runtime 可以免去输入–runtime=nvidia</p><h3 id="安装Curl-默认居然没有！"><a href="#安装Curl-默认居然没有！" class="headerlink" title="安装Curl (默认居然没有！"></a>安装 Curl (默认居然没有！</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install curl git</span><br></pre></td></tr></tbody></table></figure><h2 id="Jetson集群！之-k3s安装"><a href="#Jetson集群！之-k3s安装" class="headerlink" title="Jetson集群！之 k3s安装"></a>Jetson 集群！之 k3s 安装</h2><p>在 Master（本处为 NX）上安装 K3S Server：<br>执行指令如下：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sfL https://rancher-mirror.oss-cn-beijing.aliyuncs.com/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn  INSTALL_K3S_EXEC="--docker" sh -s -</span><br></pre></td></tr></tbody></table></figure><p>^ Rancher 似乎对最新版的兼容性不太好 可以通过 INSTALL_K3S_VERSION 设置版本 如 INSTALL_K3S_VERSION=v1.23.6+k3s1</p><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658082886604.png" alt="1658082886604"></p><p>检测是否安装完成：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">sudo kubectl get node</span><br></pre></td></tr></tbody></table></figure><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658082965067.png" alt="1658082965067"></p><p>测试能否执行计算，执行一个第三方打包好的 cuda devicequery 容器：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo kubectl run -it nvidia --image=jitteam/devicequery --restart=Never</span><br></pre></td></tr></tbody></table></figure><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658083047450.png" alt="1658083047450"></p><p>在三个 Worker 上（本处为 node1/node2/node3）上安装 K3S agent：</p><h3 id="首先在Master（这里是-node0）上找到k3s-Server的密钥（token），执行以下指令"><a href="#首先在Master（这里是-node0）上找到k3s-Server的密钥（token），执行以下指令" class="headerlink" title="首先在Master（这里是 node0）上找到k3s Server的密钥（token），执行以下指令"></a>首先在 Master（这里是 node0）上找到 k3s Server 的密钥（token），执行以下指令</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cat /var/lib/rancher/k3s/server/node-token</span><br></pre></td></tr></tbody></table></figure><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658083119148.png" alt="1658083119148"></p><h3 id="在每个-worker（node1-x2F-node2-x2F-node3）上执行"><a href="#在每个-worker（node1-x2F-node2-x2F-node3）上执行" class="headerlink" title="在每个 worker（node1/node2/node3）上执行"></a>在每个 worker（node1/node2/node3）上执行</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export k3s_token="&lt;前一步显示的node-token字符串&gt;"</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export k3s_url="https://&lt;IP_OF_MASTER&gt;:6443"# 这里的&lt;IP_OF_MASTER&gt;为NX的IP </span><br></pre></td></tr></tbody></table></figure><p>然后执行下面指令：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sfL https://rancher-mirror.oss-cn-beijing.aliyuncs.com/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn K3S_URL=${k3s_url} K3S_TOKEN=${k3s_token} INSTALL_K3S_EXEC="--docker" sh -</span><br></pre></td></tr></tbody></table></figure><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658084450686.png" alt="1658084450686"></p><h3 id="在-Master上执行下面指令，检测-agent-安装："><a href="#在-Master上执行下面指令，检测-agent-安装：" class="headerlink" title="在 Master上执行下面指令，检测 agent 安装："></a>在 Master 上执行下面指令，检测 agent 安装：</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo kubectl get nodes</span><br></pre></td></tr></tbody></table></figure><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658084534461.png" alt="1658084534461"></p><p>这就表示 worker 节点已经进入这个 k3s 管理范围内，只不过还没设定角色</p><h3 id="为每个-worker-设定角色：在-Master节点（node0）上执行角色设定指令"><a href="#为每个-worker-设定角色：在-Master节点（node0）上执行角色设定指令" class="headerlink" title="为每个 worker 设定角色：在 Master节点（node0）上执行角色设定指令"></a>为每个 worker 设定角色：在 Master 节点（node0）上执行角色设定指令</h3><p>sudo kubectl label node node1 node2 node3 node-role.kubernetes.io/worker=worker</p><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658084616783.png" alt="1658084616783"></p><p>再检测一下节点状态：</p><p>sudo kubectl get nodes</p><p><img src="/image/%E9%9A%8F%E7%AC%94-Jetson%E9%85%8D%E7%BD%AE&amp;Jetson%E9%9B%86%E7%BE%A4/1658084647576.png" alt="1658084647576"></p><h2 id="在-Kubernetes-中启用-GPU-支持"><a href="#在-Kubernetes-中启用-GPU-支持" class="headerlink" title="在 Kubernetes 中启用 GPU 支持"></a>在 Kubernetes 中启用 GPU 支持</h2><p><del>在集群中的所有 GPU 节点上配置上述选项后，您可以通过部署以下守护程序集来启用 GPU 支持：</del></p><p><del>kubectl create -f <a href="https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.12.2/nvidia-device-plugin.yml">https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.12.2/nvidia-device-plugin.yml</a></del></p><p><del>常规安装不适用于 Jetson，你需要经历一番折腾才可以在 Kubernetes 中启用 GPU 支持</del></p><p><font size="5"><strong>其实你完全不需要这东西，只要你假定每个节点都能跑 CUDA，这东西就没有意义</strong></font></p><p>如果你一定想要个 以下是食用方法：</p><p>要让 device-plugin 在 ARM64 架构上工作，我们需要使用以下补丁编辑 NVIDIA 设备插件：</p><ul><li><p>0001-arm64-add-support-for-arm64-architectures.patch</p></li><li><p>0002-nvidia-Add-support-for-tegra-boards.patch</p></li><li><p>0003-main-Add-support-for-tegra-boards.patch</p></li></ul><p>克隆原始 NVIDIA device-plugin 存储库并应用补丁：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git clone -b 1.0.0-beta6 https://github.com/nvidia/k8s-device-plugin.git</span><br><span class="line">$ cd k8s-device-plugin</span><br><span class="line">$ wget https://labs.windriver.com/downloads/0001-arm64-add-support-for-arm64-architectures.patch</span><br><span class="line">$ wget https://labs.windriver.com/downloads/0002-nvidia-Add-support-for-tegra-boards.patch</span><br><span class="line">$ wget https://labs.windriver.com/downloads/0003-main-Add-support-for-tegra-boards.patch</span><br><span class="line">$ git am 000*.patch</span><br></pre></td></tr></tbody></table></figure><p>然后，构建 device-plugin 容器：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t nvidia/k8s-device-plugin:1.0.0-beta6 -f docker/arm64/Dockerfile.ubuntu16.04 .</span><br></pre></td></tr></tbody></table></figure><p>接下来，将容器部署到您的集群中：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f nvidia-device-plugin.yml</span><br></pre></td></tr></tbody></table></figure><p>最后，检查 pod 的状态以及它们都运行之前的状态：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get pods -A</span><br></pre></td></tr></tbody></table></figure><p>设备插件的示例输出如下：</p><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs nvidia-device-plugin-daemonset-k8g57 --namespace=kube-system</span><br><span class="line">2020/05/29 19:49:07 NVIDIA Tegra device detected!</span><br><span class="line">2020/05/29 19:49:07 Starting FS watcher.</span><br><span class="line">2020/05/29 19:49:07 Starting OS watcher.</span><br><span class="line">2020/05/29 19:49:07 Retreiving plugins.</span><br><span class="line">2020/05/29 19:49:07 Starting GRPC server for 'nvidia.com/gpu'</span><br><span class="line">2020/05/29 19:49:07 Starting to serve 'nvidia.com/gpu' on /var/lib/kubelet/device-plugins/nvidia.sock</span><br><span class="line">2020/05/29 19:49:07 Registered device plugin for 'nvidia.com/gpu' with Kubelet</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 机器学习 </category>
+          
+          <category> k3s </category>
+          
+          <category> 集群 </category>
+          
+          <category> 个人项目 </category>
+          
+          <category> Jetson </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> k3s </tag>
+            
+            <tag> Jetson </tag>
+            
+            <tag> 机器学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>开发随笔 - selenium 项目容器化</title>
+      <link href="/2022/06/14/"/>
+      <url>/2022/06/14/</url>
+      
+        <content type="html"><![CDATA[<p>简单记录下在将 selenium 项目迁移至容器时遇到的一些小问题</p><span id="more"></span><h2 id="1-Dockerfile"><a href="#1-Dockerfile" class="headerlink" title="1.Dockerfile"></a>1.Dockerfile</h2><p>参考项目 <a href="https://github.com/joyzoursky/docker-python-chromedriver">Github:joyzoursky/docker-python-chromedriver</a></p><figure class="highlight dockerfile"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.8</span>-alpine</span><br><span class="line"></span><br><span class="line"><span class="comment"># update apk repo</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> sed -i <span class="string">'s/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g'</span> /etc/apk/repositories</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># install chromedriver</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apk update</span></span><br><span class="line"><span class="keyword">ENV</span> PYTHONUNBUFFERED=<span class="number">1</span></span><br><span class="line"><span class="keyword">ENV</span> DISPLAY=:<span class="number">99</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> apk add --no-cache chromium chromium-chromedriver </span></span><br><span class="line"><span class="comment"># upgrade pip</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /WORKDIR</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> requirements.txt /WORKDIR/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> main.py /WORKDIR/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> python main.py</span></span><br></pre></td></tr></tbody></table></figure><h2 id="2-会遇到的问题："><a href="#2-会遇到的问题：" class="headerlink" title="2.会遇到的问题："></a>2. 会遇到的问题：</h2><ol><li><p>root 权限下 需要添加 <code>option.add_argument('--no-sandbox')</code> 才能正常启动</p></li><li><p>安装 demjson 2.2.4 出现以下报错</p><p><code>error in demjson setup command: use_2to3 is invalid</code><br>由于 demjson 2.2.4 兼容 python2 和 python3，当安装环境为 python3 时，有一部分代码需要转换<br>Setuptools 从版本 58.0.0 开始不再支持 2to3 的 builds，所以导致 demjson 2.2.4 安装后不再可用，<br>降级 setuptools 版本即可解决<br><code>pip install --upgrade setuptools==57.5.0</code></p></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> Python </category>
+          
+          <category> 开发随笔 </category>
+          
+          <category> 爬虫 </category>
+          
+          <category> 个人项目 </category>
+          
+          <category> selenium </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> Docker </tag>
+            
+            <tag> 开发 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>硬件随笔 - RRF (RepRapFirmware) 应力释放相关调优</title>
+      <link href="/2022/06/12/"/>
+      <url>/2022/06/12/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>翻译自 <a href="https://duet3d.dozuki.com/Wiki/Pressure_advance">DuetWiki Pressure_advance 条目</a>及论坛相关指南并根据实际情况添加内容</p></blockquote><span id="more"></span><blockquote><p>划重点：3D 打印机的调优是黑魔法，任何机械装配精度、温度变化、材料本身性质及环境湿度都会影响到打印质量，应力释放只是消除其中一个因素。</p></blockquote><h2 id="什么是应力释放？"><a href="#什么是应力释放？" class="headerlink" title="什么是应力释放？"></a>什么是应力释放？</h2><p>压力推进旨在补偿材料和挤出机系统的应力。至少有三个应力来源：</p><ul><li>远程挤出机送料管中的材料丝表现得好像它是可压缩的，因为它的直径通常比管的内径小 0.25 毫米。当它处于张力状态时，它将采用送料管允许的最短路径。但当它受到压缩时，它会左右弯曲，因此管中的材料长度会更大。</li><li>材料本身具有轻微的可压缩性。</li><li>为了产生扭矩，步进电机转子的角度必须滞后于线圈中电流控制的角度。材料抵抗进料的次数越多，滞后角就越大。所以电机本身也带有点 “弹性”。</li></ul><p>每当挤出速度增加时，这些因素都会导致挤出不足：例如，当喷嘴必须从零或接近零的速度加速时，例如在线条的起点处，这是因为在移动开始时进料的一些材料用于抵消应力并增加压力。<br>同样，当挤出速度降低时，例如当喷嘴在线条末端减速时，就会出现过度挤出。这是因为即使在挤出机驱动器减速或停止后，送料管中的压力也会继续推动细丝通过喷嘴。</p><p>应力释放通过在挤出速度增加时通过挤出机驱动供给额外的细丝来补偿应力，而在挤出速度降低时通过挤出机供给较少的细丝，这会使材料在减速阶段的最后部分进行一个缩回的动作。</p><p>从数学上讲，它是这样工作的：<br><code>实际挤出速度 = 请求的挤出速度 + (K * 挤出机加速度)</code><br>常数 K 是您配置的应力释放量。</p><h2 id="如何启用和配置应力释放"><a href="#如何启用和配置应力释放" class="headerlink" title="如何启用和配置应力释放"></a>如何启用和配置应力释放</h2><p>应力释放配置关联在每个挤出机驱动器上。不同的挤出机驱动器可以具有不同的应力释放设置。要在挤出机驱动器上启用压力推进，请使用以下命令形式：<br><code>M572 D0 S0.1</code><br>D 参数是挤出机编号，S 参数是您希望该挤出机配置的应力释放量。要为多个挤出机设置相同的 S 参数，请列出每个挤出机的 D 值，用冒号分隔：<br><code>M572 D0:1 S0.1</code><br>要为不同的挤出机分配不同的值，您需要使用单独的 <code>M572</code> 命令。</p><h2 id="使用应力释放多少？"><a href="#使用应力释放多少？" class="headerlink" title="使用应力释放多少？"></a>使用应力释放多少？</h2><p>所需的应力释放量将根据影响挤出系统应力的许多因素而变化，例如热端和挤出机齿轮之间的距离、材料类型、打印速度和温度、加加速度和加速度值。主要因素是挤出机和热端之间的远程挤出机送料管长度。在某些情况下，非常长的远程挤出机送料管 (1m) 可能需要接近 1.0 甚至 2.0 的 S 值。而像 Titan Aero 这样的直接驱动挤出机具有良好的结果，其值约为 0.05。</p><p>PLA 调优的一个很好的起点如下：</p><p>近程挤出：S0.025 及以上<br>短远程挤出机（送料管长度约 200mm）：S0.1 及以上<br>中远程挤出机（送料管长度约 400mm）：S0.3 及以上<br>长远程挤出机（送料管长度约 600mm）：S0.5 及以上<br>非常长的远程挤出机 (送料管长度 800mm 及以上)：S0.7 及以上</p><p>这些只是起点，您的特定设置可能需要更多或更少。唯一确定的方法是实际的打印测试。不同的材料可能表现得非常不同。</p><h2 id="启用应力释放的副作用"><a href="#启用应力释放的副作用" class="headerlink" title="启用应力释放的副作用"></a>启用应力释放的副作用</h2><p>如果您使用大量的应力释放，则挤出机可能会在移动结束时缩回材料。如果该移动之后本身就有回缩灯丝的操作，那么回缩的总量对于您的热端来说可能太大了。因此，当您启用压力推进时，您应该考虑减少回缩。</p><p>当挤出机加速度改变时，挤出机速度必须瞬时改变。如果配置的挤出机加加速度太低而不允许这样做，则挤出机加速度将被限制以满足的最大挤出机加加速度，这反过来又会限制打印加速度。因此，如果启用压力提前会减慢打印速度，这可能表明 M566 命令中配置的允许挤出机加加速度过低。这对于像 Zesty Nimble 这样使用高传动比和低加加速度值的远程直接驱动挤出机来说可能是个问题。</p><p>此外，当使用压力推进时，周边和实心填充线之间可能存在间隙。为了解决这个问题，可能需要调整切片器中的填充重叠值。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 3D打印 </category>
+          
+          <category> 硬件随笔 </category>
+          
+          <category> 硬件 </category>
+          
+          <category> 调优 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
+            
+            <tag> 3D打印 </tag>
+            
+            <tag> 调优 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>硬件项目：NekoKC 基于 ESP32-C3 的运动追踪猫耳头箍 [WIP]</title>
+      <link href="/2022/05/11/"/>
+      <url>/2022/05/11/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><a href="https://oshwhub.com/Rhode-Eng-Dep/nekokc-mcu">项目链接</a></p></blockquote><blockquote><p>特别提醒：焊接请注意安全 因不遵守安全操作规范造成的事故及经济损失请自行承担责任</p></blockquote><span id="more"></span><h2 id="0：BOM表"><a href="#0：BOM表" class="headerlink" title="0：BOM表"></a>0：<a href="/assets/NekoKC-Main_rev0.html">BOM 表</a></h2><iframe src="/assets/NekoKC-Main_rev0.html" height="600px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;"></iframe><h2 id="1-硬件选型及设计"><a href="#1-硬件选型及设计" class="headerlink" title="1. 硬件选型及设计"></a>1. 硬件选型及设计</h2><p>硬件选型方面，本项目重点是：轻量化、低成本、低功耗，因此选用：</p><ul><li>片上自带 TTL 且最高 350ma 超低功耗的 ESP32-C3 作为主控 MCU，该 MCU 自带 WiFi 和蓝牙，后续也可以开发 APP 进行功能扩展；</li><li>姿态传感器使用经典的 MPU-6050，拆机仅需 4 块一个；</li><li>稳压模块最初选择 ASM1117，但是考虑到小型锂电池的输出电流不足以达到 1117 的最低范围，因此选用 ME6211；</li><li>充电管理 IC 选用 IP2312U 支持 5V2A 10W 快充，且外部电路较少，非常适合小体积应用。</li></ul><p>PCB 方面，整体使用离散化设计，将各个模块分离在单独的小板上，使用 FPC 软排线连接，且宽度压缩在 1.5cm 内，很适合贴合在头箍上<br>舵机方面，选择 3.7 克空心杯，12 块一个，虽然比 SG90 贵好多但是体积更小，且驱动电流更低，对长时间续航更友好。</p><h2 id="2-软件设计"><a href="#2-软件设计" class="headerlink" title="2.软件设计"></a>2. 软件设计</h2><blockquote><p>目前硬件部分暂未完成，等待更新</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 硬件 </category>
+          
+          <category> 个人项目 </category>
+          
+          <category> 单片机 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
+            
+            <tag> ESP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>硬件项目：ESP32-TNC 基于 ESP32-S2 和 SR-FRS 无线电模块的简单 TNC [WIP]</title>
+      <link href="/2022/05/10/"/>
+      <url>/2022/05/10/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p><a href="https://oshwhub.com/Minamion/esp32s3-tnc">项目链接</a></p></blockquote><blockquote><p>警告：本项目仅供研究学习，调试过程中请务必连接射频假负载，使用过程中请遵守相关法律法规。</p></blockquote><blockquote><p>特别提醒：焊接请注意安全 因不遵守安全操作规范造成的事故及经济损失请自行承担责任。</p></blockquote><span id="more"></span><h2 id="0：BOM表"><a href="#0：BOM表" class="headerlink" title="0：BOM表"></a>0：<a href="/assets/ESP32-TNC_rev0.html">BOM 表</a></h2><iframe src="/assets/ESP32-TNC_rev0.html" height="600px" width="100%" scrolling="auto" frameborder="0" style="box-shadow: 0px 0px 20px -10px #888;"></iframe><h2 id="1-硬件选型及设计"><a href="#1-硬件选型及设计" class="headerlink" title="1.硬件选型及设计"></a>1. 硬件选型及设计</h2><p> SR-FRS-2WU 无线语音对讲及数传模块，发射功率高达 2W，开阔地通讯距离可达 9 公里，内置收发控制、射频功放。<br> MCU 选择 ESP32-WROOM-32D，片上自带 ADC 和 DAC（后续型号皆不内置 DAC） SR-FRS 射频模块的音频信号走 DAC 输入 MCU 进行处理，亦或者麦克风信号走 ADC 输入到射频模块，因此也可以走 ESP 连接手机 APP 进行语音输入输出作为 TNC (terminal node controller 终端控制无线电) 模块使用</p><h2 id="2-目前的问题"><a href="#2-目前的问题" class="headerlink" title="2.目前的问题"></a>2. 目前的问题</h2><p> TNC 设计为通过 MCU 进行音频信号的输入输出，还需要进行一些更改才可以与 PTT 一起使用</p><h2 id="3-软件设计"><a href="#3-软件设计" class="headerlink" title="3.软件设计"></a>3. 软件设计</h2><p> SR-FRS 设计使用 AT 命令与 MCU 进行通信，arduino 下有现成库可以直接使用。因此只需要考虑音频处理部分和音频电路设计。<br> 理论上该 TNC 也可用于发送摩斯电码或 SSTV，但是持续占用频道进行发报非常不文明，请不要这样做。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 硬件 </category>
+          
+          <category> 学习 </category>
+          
+          <category> 单片机 </category>
+          
+          <category> 个人项目 </category>
+          
+          <category> 无线电 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
+            
+            <tag> ESP </tag>
+            
+            <tag> 无线电 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>NFC 名片 - 从入门到秃头 [WIP]</title>
+      <link href="/2020/02/09/"/>
+      <url>/2020/02/09/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>本文适用于 从零开始设计一张带 NFC 功能并无需外部供电的名片</p></blockquote><blockquote><p>本文也适用于 收到本人所制作 NFC 名片基板想学习或使用的读者</p></blockquote><blockquote><p>警告：本文将会有大量专业名词及数学公式 但是会尽可能写得通俗易懂</p></blockquote><blockquote><p>特别提醒：焊接请注意安全 因不遵守安全操作规范造成的事故及经济损失请自行承担责任</p></blockquote><span id="more"></span><h2 id="1-硬件部分的设计"><a href="#1-硬件部分的设计" class="headerlink" title="1.硬件部分的设计"></a>1. 硬件部分的设计</h2><h3 id="Part-0：BOM表"><a href="#Part-0：BOM表" class="headerlink" title="Part 0：BOM表"></a>Part 0：BOM 表</h3><h3 id="Part-1：单片机的选型"><a href="#Part-1：单片机的选型" class="headerlink" title="Part 1：单片机的选型"></a>Part 1：单片机的选型</h3><h4 id="Part-1-1：为什么选择avr而不是stm32或者51"><a href="#Part-1-1：为什么选择avr而不是stm32或者51" class="headerlink" title="Part 1-1：为什么选择avr而不是stm32或者51"></a>Part 1-1：为什么选择 avr 而不是 stm32 或者 51</h4><h3 id="Part-2：如何设计nfc功能"><a href="#Part-2：如何设计nfc功能" class="headerlink" title="Part 2：如何设计nfc功能"></a>Part 2：如何设计 nfc 功能</h3><h3 id="Part-2-1：nfc天线设计规范"><a href="#Part-2-1：nfc天线设计规范" class="headerlink" title="Part 2-1：nfc天线设计规范"></a>Part 2-1：nfc 天线设计规范</h3><h3 id="Part-2-2：NFC-ic的选择"><a href="#Part-2-2：NFC-ic的选择" class="headerlink" title="Part 2-2：NFC ic的选择"></a>Part 2-2：NFC ic 的选择</h3><h3 id="Part-3：隔空取电？如何做到的？"><a href="#Part-3：隔空取电？如何做到的？" class="headerlink" title="Part 3：隔空取电？如何做到的？"></a>Part 3：隔空取电？如何做到的？</h3><h4 id="Part-3-1：什么是RLC谐振"><a href="#Part-3-1：什么是RLC谐振" class="headerlink" title="Part 3-1：什么是RLC谐振"></a>Part 3-1：什么是 RLC 谐振</h4><h3 id="Part-4：从零开始的PCB绘制"><a href="#Part-4：从零开始的PCB绘制" class="headerlink" title="Part 4：从零开始的PCB绘制"></a>Part 4：从零开始的 PCB 绘制</h3><h2 id="软件示例"><a href="#软件示例" class="headerlink" title="软件示例"></a>软件示例</h2><h2 id="可能的用法"><a href="#可能的用法" class="headerlink" title="可能的用法"></a>可能的用法</h2><h2 id="也许会有的DLC"><a href="#也许会有的DLC" class="headerlink" title="也许会有的DLC"></a>也许会有的 DLC</h2><h2 id="附录1：该名片金手指的接口定义及可能的应用"><a href="#附录1：该名片金手指的接口定义及可能的应用" class="headerlink" title="附录1：该名片金手指的接口定义及可能的应用"></a>附录 1：该名片金手指的接口定义及可能的应用</h2><h2 id="附录2：该名片不同版本的区别和功能差异"><a href="#附录2：该名片不同版本的区别和功能差异" class="headerlink" title="附录2：该名片不同版本的区别和功能差异"></a>附录 2：该名片不同版本的区别和功能差异</h2><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>]]></content>
+      
+      
+      <categories>
+          
+          <category> 硬件 </category>
+          
+          <category> 学习 </category>
+          
+          <category> 单片机 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> AVR </tag>
+            
+            <tag> NFC </tag>
+            
+            <tag> 硬件 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hualu WifiDock AR9331 无线中继魔改笔记（？</title>
+      <link href="/2019/06/20/"/>
+      <url>/2019/06/20/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>已编译完成的 bin 文件可从<a href="https://github.com/minamion/openwrt/releases/tag/v18.06.3-1">此处</a>下载</p></blockquote><blockquote><p>懒得修改型号了 切记不要刷给 wr703n 这是 8m flash 版本</p></blockquote><span id="more"></span><h2 id="关于设备："><a href="#关于设备：" class="headerlink" title="关于设备："></a>关于设备：</h2><hr><p>AR9331 的 CPU 8M flash 64M DDR 自带 LS 4100mah 电池 20 块捡回来的库存垃圾 可插 TF 卡和 U 盘 天线采用 IPX 接口连接（可以更换）</p><p><a href="https://i.loli.net/2019/06/20/5d0b755fc2efb26699.jpg"><img src="https://i.loli.net/2019/06/20/5d0b755fc2efb26699.jpg" alt="拆机图"></a></p><h2 id="刷入系统："><a href="#刷入系统：" class="headerlink" title="刷入系统："></a>刷入系统：</h2><hr><p>很明显官方的残废系统并不能满足我们的需求</p><h3 id="刷入breed"><a href="#刷入breed" class="headerlink" title="刷入breed"></a>刷入 breed</h3><p>这款无线中继硬件和 TP-Link TL-WR703N 非常相似 不同之处在于 复位键是在 GPIO 12 上 flash 有 8M</p><p><a href="https://i.loli.net/2019/06/20/5d0b7531ed82135864.png"><img src="https://i.loli.net/2019/06/20/5d0b7531ed82135864.png" alt="breed"></a><br>具体步骤：</p><ul><li>开机，连接 Hualu 开头的 WiFi。（WiFi 密码 12345678）</li><li>ping 10.10.1.1 能通后，浏览器打开 <a href="http://10.10.1.1/">http://10.10.1.1/</a></li><li> 开免密 Telnet 无线存储 — 目录名称框内输入: %24 (killall telnetd;telnetd -l /bin/ash) 然后点击创建按钮（很明显这里有个注入漏洞）</li><li>telnet 登录 10.10.1.1（无需密码）。</li><li>电脑开 hfs web 服务，共享 <a href="URL" title="https://breed.hackpascal.net/EOL/breed-ar9331-pisen-r1163.bin">breed 文件</a>，刷入 breed</li><li><ul><li> 下载 breed（网页上载也可以，网页上载之后，是在 /tmp/usb/sda 目录下）  <figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp/</span><br><span class="line">wget [http://10.10.1.2/breed-ar9331-pisen-r1163.bin](http://10.10.1.2/breed-ar9331-pisen-r1163.bin)</span><br></pre></td></tr></tbody></table></figure></li></ul></li><li><ul><li>烧写  <figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp/</span><br><span class="line">mtd erase u-boot; mtd write breed-ar9331-pisen–GPIO12.bin u-boot 2&gt;ubootwrite.txt</span><br></pre></td></tr></tbody></table></figure></li></ul></li><li>重启使用 BreedEnter 进 breed</li><li><ul><li><a href="URL" title="https://breed.hackpascal.net/BreedEnter.zip">BreedEnter</a>（需要 <a href="URL" title="https://nmap.org/npcap/#download ">NpCap</a> 的 winpcap 兼容模式支持）</li></ul></li></ul><h3 id="刷入Openwrt"><a href="#刷入Openwrt" class="headerlink" title="刷入Openwrt"></a>刷入 Openwrt</h3><p><a href="https://i.loli.net/2019/06/20/5d0b7530f1d3384567.png"><img src="https://i.loli.net/2019/06/20/5d0b7530f1d3384567.png" alt="breed"></a><br>由于硬件与 WR703N 基本一致 首先尝试刷入 Openwrt 官方提供的 703N 固件，经测试基本功能正常 但是白白浪费 4M 空间实在可惜，最终还是决定自己编译一份</p><h2 id="编译Openwrt"><a href="#编译Openwrt" class="headerlink" title="编译Openwrt"></a>编译 Openwrt</h2><hr><blockquote><p>已知信息：WiFi 指示灯 GPIO 是 0，高电平有效 网口状态灯是 17，低电平有效 复位键是 12，高电平有效</p></blockquote><h4 id="使用docker-openwrt-buildroot进行编译"><a href="#使用docker-openwrt-buildroot进行编译" class="headerlink" title="使用docker-openwrt-buildroot进行编译"></a>使用 docker-openwrt-buildroot 进行编译</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -it noonien/openwrt-buildroot bash  </span><br><span class="line">sudo apt-get update  </span><br><span class="line">sudo apt-get install git-core build-essential libssl-dev libncurses5-dev unzip gawk zlib1g-dev subversion mercurial gettext autoconf libtool libpcre3-dev asciidoc xmlto libev-dev libudns-dev libc-ares-dev automake libmbedtls-dev libsodium-dev  </span><br></pre></td></tr></tbody></table></figure><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd openwrt  </span><br><span class="line">  </span><br><span class="line"> ./scripts/feeds update -a  </span><br><span class="line">  </span><br><span class="line"> scripts/feeds install -a  </span><br></pre></td></tr></tbody></table></figure><ul><li>修改 <code>~/openwrt/target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr703n.c</code></li></ul><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> TL\_WR703N\_GPIO\_LED\_SYSTEM   0  </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TL\_WR703N\_GPIO\_BTN\_RESET    12  </span></span><br></pre></td></tr></tbody></table></figure><pre><code> 以及同文件 `gpio_led tl_wr703n_leds_gpio[]` 部分中</code></pre><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.active_low = <span class="number">0</span>,  </span><br></pre></td></tr></tbody></table></figure><ul><li><p>打开 <code>~/openwrt/target/linux/ar71xx/image/tiny-tp-link.mk</code> ，找到 <code>define Device/tl-wr703n-v1</code>。</p></li><li><p>将 <code>$(Device/tplink-4mlzma)</code> 中的 <code>4mlzma</code> 改成 <code>8mlzma</code> 就可以支持 8MB 固件编译（16MB 同理）</p></li><li><p>在源代码目录下 <code>make menuconfig</code></p></li><li><p><code>Target System</code> 和 <code>Subtarget</code> 应该分别是 Atheros <code>AR7xxx/AR9xxx</code> 和 <code>Devices with small flash</code>，<code>Target Profile</code> 选择 <code>TP-LINK TLWR703N v1</code></p></li><li><p>启用 Web 管理界面 LuCI （记得选择为 [*] 而不是 [M]，我们不需要编译 ipk 文件，直接整合进 bin 就行）</p><p><code>LuCI → Collections → 选中 luci</code></p></li><li><p>添加 LuCI 中文支持</p><p><code>LuCI → Modules → Translations → 选中 Chinese (zh-cn)</code></p></li><li><p>生成构建的配置文件，检查依赖</p><p><code>make defconfig</code></p></li><li><p>编译，可加上 V=99 参数输出所有调试信息</p><p><code>make</code></p></li><li><p>从 <code>openwrt/bin/target/ar71xx/tiny</code> 中取出 <code>openwrt-ar71xx-tiny-tl-wr703n-v1-squashfs-factory.bin</code> 刷入即可</p></li></ul><h3 id="附加内容：编译某不可描述软件"><a href="#附加内容：编译某不可描述软件" class="headerlink" title="附加内容：编译某不可描述软件"></a>附加内容：编译某不可描述软件</h3><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">自行去除空格</span>  </span><br><span class="line">git clone https://github.com/aa65535/openwrt-dist-luci.git package/openwrt-dist-luci  </span><br><span class="line">git clone https://github.com/aa65535/openwrt-dns-forwarder.git package/dns-forwarder  </span><br><span class="line">git clone https://github.com/Hill-98/luci-app-shad owsocks.git package/luci-app-shad owsocks  </span><br><span class="line">git clone https://github.com/Hill-98/openwrt-shad owsocksr package/shad owsocksr-libev  </span><br><span class="line">git clone https://github.com/Hill-98/openwrt-ckipver.git package/ckipver  </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编译 po2lmo (如果有po2lmo可跳过)</span>  </span><br><span class="line">pushd package/luci-app-shad owsocksr/tools/po2lmo  </span><br><span class="line">make &amp;&amp; sudo make install  </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">选择要编译的包 dnsmasq-full curl wget coreutils-base64 bash bind-dig ckipver shad owsocksr-libev luci-app-sha dowsocks chinadns luci-app-chinadns dns-forwarderluci-app-dns-forwarde ca-certificates openssl-util ca-bundle</span>  </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">务必选择Using shared library from system</span>   </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提示 在menuconfig中按/可使用搜索</span>  </span><br><span class="line">make menuconfig</span><br></pre></td></tr></tbody></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 硬件 </category>
+          
+          <category> 学习 </category>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
+            
+            <tag> Linux开发 </tag>
+            
+            <tag> Openwrt </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>给 ws215i 编译内核所碰到的各种坑</title>
+      <link href="/2019/06/03/"/>
+      <url>/2019/06/03/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>关键词：闻上云 ws215i 内核编译<br>ATOM+2G+4G 的诡异配置电子垃圾</p></blockquote><span id="more"></span><h2 id="硬件部分："><a href="#硬件部分：" class="headerlink" title="硬件部分："></a>硬件部分：</h2><p><img src="/image/%E7%BB%99ws215i%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%89%80%E7%A2%B0%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E5%9D%91/1655300652823.png" alt="主板图" title="主板图"></p><ul><li>Intel ATOM CE5315 SOC（图中橙色框）</li><li>四块三星 512M 内存颗粒（图中绿色框）</li><li>4G 的闪迪 SD1N7DP2-40 EMMC（图中红色框）</li><li>板载一个用途未知的 pcie 接口（图中粉色框，可能是设计之初用于 WiFi 模块但是因不明原因没有安装。）</li><li>IO:</li><li>USB3.0*2</li><li>HDMI</li><li>RJ45 千兆网口</li></ul><p>  首先简单介绍一下 ws215i 的硬件，年代久远的 atom soc，只有 4G 而且还是 emmc 的存储颗粒已经给开发造成了不小的困难；不过所幸官方有提供内核源代码，然而这里就是一个坑了。</p><h2 id="系统部分"><a href="#系统部分" class="headerlink" title="系统部分"></a>系统部分</h2><p>OpenMediaVault (下文简称 OMV) 无需过多介绍，开源 NAS 系统，基于 debian，界面扁平化，简单易用还稳定 (我自己都不信)<br>然而刚开始就碰到了第一个坑，虽然这个坑比较好解决<br>在运行 apt update 或 omv-update 以及安装任何 deb 包后，都会有这样一段报错</p><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception ignored <span class="keyword">in</span>:.remove at <span class="number">0x76125420</span>&gt;Traceback (most recent call last):  File <span class="string">"/usr/lib/python3.5/weakref.py"</span>, line <span class="number">117</span>, <span class="keyword">in</span> removeTypeError: <span class="string">'NoneType'</span> <span class="built_in">object</span> <span class="keyword">is</span> <span class="keyword">not</span> callableException ignored <span class="keyword">in</span>:.remove at <span class="number">0x76125420</span>&gt;</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">&nbsp; File <span class="string">"/usr/lib/python3.5/weakref.py"</span>, line <span class="number">117</span>, <span class="keyword">in</span> remove</span><br><span class="line">TypeError: <span class="string">'NoneType'</span> <span class="built_in">object</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="built_in">callable</span></span><br></pre></td></tr></tbody></table></figure><p>解决办法也很简单</p><p><code>vim /usr/lib/python3.5/weakref.py</code></p><p>将</p><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">remove</span>(<span class="params">wr, selfref=ref(<span class="params">self</span>)</span>):</span><br></pre></td></tr></tbody></table></figure><p>修改为</p><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">remove</span>(<span class="params">wr, selfref=ref(<span class="params">self</span>),_atomic_removal=_remove_dead_weakref</span>):</span><br></pre></td></tr></tbody></table></figure><p>将</p><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_remove_dead_weakref(d, wr.key)</span><br></pre></td></tr></tbody></table></figure><p>修改为</p><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_atomic_removal(d, wr.key)</span><br></pre></td></tr></tbody></table></figure><p>即可解决<br>然而这才刚过第一关，更新完软件包，配置完 raid，加载增强插件 OMV-EXTRAS, 配置完 webdav 后，到了 docker 部分，这里是第二个坑。</p><h2 id="内核部分"><a href="#内核部分" class="headerlink" title="内核部分"></a>内核部分</h2><h3 id="寻找源代码"><a href="#寻找源代码" class="headerlink" title="寻找源代码"></a>寻找源代码</h3><p>docker 安装完报错无法启动，经过查看 log 显示缺少 aufs 支持和 nf_nat 模块，询问刷机包作者答复官方并没有给出内核源代码，本应有源代码的仓库中只有一个 readme。<br>官方 GitHub 仓库 <a href="https://github.com/wisnuc">https://github.com/wisnuc</a> 中确实并没有内核源代码，然而提交者 @matianfu-wisnuc 所 commit 的另一个仓库指向了一条线索，该账号于 <a href="https://github.com/matianfu/ws215i">https://github.com/matianfu/ws215i</a> 中提交了一份内核的 deb 文件，而这个仓库确实如作者所说只有一个 readme，并没有源代码，然而 readme 中的内容又引出一条新的线索</p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential linux-source kernel-package libncurses5-dev fakeroot</span><br><span class="line">cd barcelona-4.3.3</span><br><span class="line">make -j16</span><br><span class="line">make-kpkg --rootcmd=fakeroot --initrd --jobs=8 --append-to-version=.001 --revision=001 kernel_image kernel_headers</span><br></pre></td></tr></tbody></table></figure><p>其中 barcelona-4.3.3 文件夹所指的 应该是同账号下另一个仓库 <a href="https://github.com/matianfu/barcelona-4.3.3">https://github.com/matianfu/barcelona-4.3.3</a> 而根据该仓库的 commits 记录，其确实为加入 CE53XX 系列 soc 驱动的定制版 4.3.3 内核 （足以可见该公司 GitHub 使用是多么的不规范）</p><h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>笔者为节约时间选择使用 Windows Subsystem for Linux 进行编译<br>其中有两个坑 </p><ul><li><p>gcc6 + 的一个已知问题 内核编译不支持使用 PIC 模式：</p><p>在 gcc 6 + 版本中默认启用 PIE，而这是 gcc 的一个已知问题，目前为止官方并没有进行修复，因此只能修改 makefile 文件：在 <code>KBUILD_CFLAGS</code> 后加上 <code>-fno-pie</code></p></li><li><p>Function not implemented This may be due to a lack of SYSV IPC support.</p><p>WSL 下 fakeroot 存在问题，可以通过 <code>sudo update-alternatives --set fakeroot /usr/bin/fakeroot-tcp</code> 进行解决</p></li></ul><h3 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h3><p>运行 <code>make menuconfig</code> 并勾选 nf_nat、iptable 及其下全部支持、overlayfs 文件系统支持<br>运行</p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j16 &amp;&amp; make-kpkg --rootcmd=fakeroot --initrd --jobs=8 kernel_image kernel_headers</span><br></pre></td></tr></tbody></table></figure><p>即可编译完成并打包 deb 文件在上一层目录，将其上传至 nas 中并 <code>dpkg -i</code> 安装并重启即刻顺利使用 docker</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这台设备确实是挺非传统的，没有传统的 BIOS，存储设备也是非传统的 emmc，甚至连 soc 也是主线内核没有兼容的，but it work</p><h2 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h2><p>由于这台设备的 emmc 只有 4gb 所以 docker 的文件不建议放在 emmc 内，可以使用 <code>ln -s</code> 软链接链接至 raid 下</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 硬件 </category>
+          
+          <category> 学习 </category>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
+            
+            <tag> Linux开发 </tag>
+            
+            <tag> python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
